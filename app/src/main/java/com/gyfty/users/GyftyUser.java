@@ -86,7 +86,8 @@ public class GyftyUser extends ParseUser {
         address,
         notificationType,
         currency,
-        promoCode
+        promoCode,
+        otp
 
 
     }

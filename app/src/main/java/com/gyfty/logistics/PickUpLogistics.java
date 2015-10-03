@@ -60,7 +60,7 @@ public class PickUpLogistics extends ParseObject implements Logistics {
         deliveryMan,
         address,
         gyftyAdmin,
-        image
+        image,
 
     }
 

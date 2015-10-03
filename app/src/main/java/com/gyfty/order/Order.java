@@ -1,5 +1,8 @@
 package com.gyfty.order;
 
+import com.gyfty.logistics.DeliveryLogistics;
+import com.gyfty.logistics.Schedule;
+import com.gyfty.pickup.PickUp;
 import com.gyfty.support.Addresses;
 import com.gyfty.events.GyftyEvent;
 import com.gyfty.logistics.TimeSlot;
@@ -23,20 +26,20 @@ public class Order extends ParseObject{
         put(OrderParams.orderId.toString(),value);
     }
 
-    public TimeSlot getTimeSlot() {
-        return (TimeSlot) getParseObject(OrderParams.timeSlot.toString());
+    public Schedule getSchedule() {
+        return (Schedule) getParseObject(OrderParams.schedule.toString());
     }
 
-    public void setTimeSlot(TimeSlot value) {
-        put(OrderParams.timeSlot.toString(),value);
+    public void setSchedule(Schedule value) {
+        put(OrderParams.schedule.toString(),value);
     }
 
-    public Addresses getAddress() {
-        return (Addresses) getParseObject(OrderParams.address.toString());
+    public DeliveryLogistics getDeliveryLogistics() {
+        return (DeliveryLogistics) getParseObject(OrderParams.deliveryLogistics.toString());
     }
 
-    public void setAddress(Addresses value) {
-        put(OrderParams.address.toString(),value);
+    public void setDeliveryLogistics(DeliveryLogistics value) {
+        put(OrderParams.deliveryLogistics.toString(),value);
     }
 
     public GyftyEvent getEvent() {
@@ -45,6 +48,14 @@ public class Order extends ParseObject{
 
     public void setEvent(GyftyEvent value) {
         put(OrderParams.event.toString(),value);
+    }
+
+    public PickUp getPickUp() {
+        return (PickUp) getParseObject(OrderParams.pickUp.toString());
+    }
+
+    public void setPickUp(PickUp value) {
+        put(OrderParams.pickUp.toString(),value);
     }
 
 
@@ -69,12 +80,11 @@ public class Order extends ParseObject{
     public enum OrderParams {
 
         orderId,
-        timeSlot,
-        address,
+        schedule,
+        deliveryLogistics,
         event,
+        pickUp,
         orderedProducts,
-
-        deliveryHandler,
 
 
     }

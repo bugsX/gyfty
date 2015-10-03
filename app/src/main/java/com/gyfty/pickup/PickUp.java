@@ -3,7 +3,7 @@ package com.gyfty.pickup;
 import com.gyfty.order.Order;
 import com.gyfty.logistics.PickUpLogistics;
 import com.gyfty.logistics.Schedule;
-import com.gyfty.services.cart.Cart;
+import com.gyfty.cart.Cart;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
@@ -22,11 +22,11 @@ public class PickUp extends ParseObject {
         put(PickUpParams.order.toString(),value);
     }
 
-    public com.gyfty.services.cart.Cart.Cart getCart() {
-        return (com.gyfty.services.cart.Cart.Cart)getParseObject(PickUpParams.cart.toString());
+    public Cart getCart() {
+        return (Cart)getParseObject(PickUpParams.cart.toString());
     }
 
-    public void setCart(Cart.Cart value) {
+    public void setCart(Cart value) {
         put(PickUpParams.cart.toString(),value);
     }
 
@@ -53,7 +53,8 @@ public class PickUp extends ParseObject {
         order, //Order
         cart, //Cart
         pickUpLogistics, // Address
-        schedule //Schedule
+        schedule, //Schedule
+        status
     }
 
 }

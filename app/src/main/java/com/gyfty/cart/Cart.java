@@ -2,13 +2,16 @@ package com.gyfty.cart;
 
 import android.util.Log;
 
+import com.gyfty.events.GyftyEvent;
 import com.gyfty.logistics.DeliveryLogistics;
 import com.gyfty.logistics.Schedule;
+import com.gyfty.order.Order;
 import com.gyfty.pickup.PickUp;
 import com.gyfty.products.GyftyProduct;
 import com.gyfty.products.GyftyProductsGroup;
 import com.gyfty.promotions.Promotion;
 import com.gyfty.users.GyftyUser;
+import com.gyfty.vendor.VendorPayments;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -61,7 +64,7 @@ public class Cart extends ParseObject {
     }
 
     public void setPickup(PickUp value) {
-        put(CartParams.pickup.toString(),value);
+        put(CartParams.pickup.toString(), value);
     }
 
     public Schedule getSchedule() {
@@ -80,12 +83,21 @@ public class Cart extends ParseObject {
         put(CartParams.deliveryLogistics.toString(),value);
     }
 
+    public GyftyEvent getEvent() {
+        return (GyftyEvent) getParseObject(CartParams.event.toString());
+    }
+
+    public void setEvent(GyftyEvent value) {
+        put(CartParams.event.toString(),value);
+    }
+
     public enum CartParams{
         user, //User
         products, //List<Prodcuts>
         pickup, //pickup
         schedule, //schedule
-        deliveryLogistics
+        deliveryLogistics,
+        event
 
 
     }
@@ -218,17 +230,38 @@ public class Cart extends ParseObject {
 
         }
 
-        public void addVendorPayment(){
+        public void addVendorPayment(GyftyProduct product,String ObjectId ,ProductPriceRow productPriceRow){
 
-
+            VendorPayments vendorPayments = new VendorPayments();
+            vendorPayments.setVendor(product.getVendor());
+            vendorPayments.setObjectId(ObjectId);
+            vendorPayments.setCommisionAmount(productPriceRow.getCommisionAmount());
+            vendorPayments.setPaymentAmount(productPriceRow.getVendorPayment());
+            vendorPayments.setTotalAmount(productPriceRow.getPriceAfterDiscount());
+            vendorPayments.saveEventually();
 
         }
 
 
-        public void buildCart(){
+        public Order buildCart(Cart cart){
+
+            Order order = new Order();
+            order.setSchedule(cart.getSchedule());
+            order.setDeliveryLogistics(cart.getDeliveryLogistics());
+            order.setPickUp(cart.getPickup());
+            order.setEvent(cart.getEvent());
+            order.setProductGroup(cart.getProducts());
+            order.saveEventually();
 
 
+            for(ProductPriceRow productPriceRow:cart.productPrice){
 
+                addVendorPayment(productPriceRow.getProduct(),order.getObjectId(),productPriceRow);
+            }
+
+
+            cart.deleteEventually();
+            return order;
 
         }
 

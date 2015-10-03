@@ -5,6 +5,7 @@ import com.gyfty.products.GyftyProduct;
 /**
  * Created by Mac on 9/27/15.
  */
+
 public class ProductPriceRow {
 
     GyftyProduct product;
@@ -38,6 +39,18 @@ public class ProductPriceRow {
     public void setPromotionDiscount(double promotionDiscount){
 
         this.promotionDiscount = promotionDiscount;
+
+    }
+
+    public double getCommisionAmount() {
+
+        return commisionAmount;
+
+    }
+
+    public void setCommisionAmount(double commisionAmount){
+
+        this.commisionAmount = commisionAmount;
 
     }
 

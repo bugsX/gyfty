@@ -1,19 +1,19 @@
 package com.gyfty.promotions;
 
+import com.gyfty.cart.Cart;
 import com.gyfty.products.GyftyProduct;
 import com.gyfty.cart.ProductPriceRow;
-import com.gyfty.services.cart.Cart;
 
 /**
  * Created by Mac on 9/21/15.
  */
 public class CartPromotion extends PercentPromotion {
 
-    public com.gyfty.services.cart.Cart.Cart getActor() {
-        return (com.gyfty.services.cart.Cart.Cart)getParseObject(CartPromotionParams.actor.toString());
+    public Cart getActor() {
+        return (Cart)getParseObject(CartPromotionParams.actor.toString());
     }
 
-    public void setActor(Cart.Cart value) {
+    public void setActor(Cart value) {
         put(CartPromotionParams.actor.toString(), value);
     }
 
