@@ -7,11 +7,10 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 
 /**
- * Created by Mac on 9/18/15.
+ * Created by akhilch on 9/18/15.
  */
 @ParseClassName("GyftyProduct")
 public class GyftyProduct extends ParseObject{
-
 
     public String getGyftyProductId() {
         return getString(GyftyProductParams.gyftyProductId.toString());
@@ -37,7 +36,7 @@ public class GyftyProduct extends ParseObject{
         put(GyftyProductParams.description.toString(),value);
     }
 
-    public double getPrice() {
+    public double getPrice() throws Exception {
         return getDouble(GyftyProductParams.price.toString());
     }
 
@@ -117,7 +116,6 @@ public class GyftyProduct extends ParseObject{
     public void setUrl(String value) {
         put(GyftyProductParams.url.toString(),value);
     }
-
 
     public enum GyftyProductParams {
 

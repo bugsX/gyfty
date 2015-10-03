@@ -1,5 +1,7 @@
 package com.gyfty.decorator;
 
+import com.gyfty.products.CartGyftyProduct;
+import com.gyfty.products.ProductDecorator;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
@@ -8,7 +10,7 @@ import com.parse.ParseObject;
  */
 
 @ParseClassName("ProductDecorator")
-public class ProductDecorator  extends ParseObject{
+public class ProductDecoratorImpl extends ParseObject implements ProductDecorator {
 
     public String getCostType() {
         return getString(ProductDecoratorParams.costType.toString());
@@ -49,6 +51,30 @@ public class ProductDecorator  extends ParseObject{
     public void setNotes(String value) {
         put(ProductDecoratorParams.notes.toString(),value);
     }
+
+    @Override
+    public CartGyftyProduct getDecoratedProduct(CartGyftyProduct product) {
+        CartGyftyProduct decoratedProduct = new CartGyftyProduct(product) {
+
+            @Override
+            public double getPrice() throws Exception {
+                if (getCostType().equals("Add")) {
+                    return super.getPrice() + getCostFactor();
+                } else if (getCostType().equals("Mul")) {
+                    return super.getPrice() * getCostFactor();
+                }
+                throw new Exception("UnSupported Product Declaration");
+            }
+
+            @Override
+            public String getSellerNotes() {
+                return super.getSellerNotes() + " - " + getNotes();
+            }
+
+        };
+        return decoratedProduct;
+    }
+
 
     enum ProductDecoratorParams {
         costType,

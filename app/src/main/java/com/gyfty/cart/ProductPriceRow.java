@@ -1,28 +1,40 @@
 package com.gyfty.cart;
 
-import com.gyfty.products.GyftyProduct;
+import com.gyfty.products.CartGyftyProduct;
+
+import lombok.Data;
 
 /**
- * Created by Mac on 9/27/15.
+ * Created by akhilch on 9/27/15.
  */
 
+@Data
 public class ProductPriceRow {
 
-    GyftyProduct product;
-    double promotionDiscount;
-    double commisionAmount;
-    double vendorPayment;
-    double priceAfterDiscount;
-    String error;
+    private CartGyftyProduct product;
+    private double promotionDiscount;
+    private double commisionAmount;
+    private double vendorPayment;
+    private double priceAfterDiscount;
+    private String error;
+
+    public ProductPriceRow(CartGyftyProduct product, double promotionDiscount, double commisionAmount, double vendorPayment, double priceAfterDiscount, String error) {
+        this.product = product;
+        this.promotionDiscount = promotionDiscount;
+        this.commisionAmount = commisionAmount;
+        this.vendorPayment = vendorPayment;
+        this.priceAfterDiscount = priceAfterDiscount;
+        this.error = error;
+    }
 
 
-    public GyftyProduct getProduct() {
+    public CartGyftyProduct getProduct() {
 
         return product;
 
     }
 
-    public void setProduct(GyftyProduct product) {
+    public void setProduct(CartGyftyProduct product) {
 
         this.product = product;
 

@@ -2,11 +2,13 @@ package com.gyfty.cart;
 
 import android.util.Log;
 
+import com.google.common.collect.Lists;
 import com.gyfty.events.GyftyEvent;
 import com.gyfty.logistics.DeliveryLogistics;
 import com.gyfty.logistics.Schedule;
 import com.gyfty.order.Order;
 import com.gyfty.pickup.PickUp;
+import com.gyfty.products.CartGyftyProduct;
 import com.gyfty.products.GyftyProduct;
 import com.gyfty.products.GyftyProductsGroup;
 import com.gyfty.promotions.Promotion;
@@ -19,7 +21,6 @@ import com.parse.ParseQuery;
 
 import org.json.JSONException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,8 +30,8 @@ import java.util.List;
 @ParseClassName("Cart")
 public class Cart extends ParseObject {
 
+    public List<ProductPriceRow> productPrice = Lists.newArrayList();
     private double total;
-    public List<ProductPriceRow> productPrice = new ArrayList<ProductPriceRow>();
 
     public GyftyUser getUser() {
         return (GyftyUser)getParseObject(CartParams.user.toString());
@@ -114,7 +115,7 @@ public class Cart extends ParseObject {
             try {
                 cart = query.getFirst();
                 if(cart==null){
-
+                    Cart cart = new Cart();
                     cart.setUser(user);
                     cart.save();
                 }
@@ -128,11 +129,20 @@ public class Cart extends ParseObject {
 
         }
 
-        public void addProductToCart(Cart cart, GyftyProduct product) {
-
+        public void addProductToCart(Cart cart, CartGyftyProduct product) {
             cart.addProduct(product);
+            double price = Double.MAX_VALUE;
+            try {
+                price = product.getPrice();
+            } catch (Exception e) {
+                Log.e("Cart", "Get price Failed " + e.getMessage() + "For user " + cart.getUser().getObjectId());
+            }
+            double commisionAmount = price * product.getVendor().getCommisionPercentage() / 100;
+            double vendorPayment = price - commisionAmount;
+            double priceAfterDiscount = price;
+            ProductPriceRow pprow = new ProductPriceRow(product, 0.0, commisionAmount, vendorPayment, priceAfterDiscount, null);
+            cart.productPrice.add(pprow);
             cart.saveEventually();
-
         }
 
         private void calculateTotal(Cart cart) {
@@ -217,10 +227,9 @@ public class Cart extends ParseObject {
 
         }
 
-        public void removePromotion(Cart cart, Promotion promotion) {
+        public void removePromotion(Cart cart, Promotion promotion) throws Exception {
 
             for(ProductPriceRow row : cart.productPrice) {
-
                 row.setPriceAfterDiscount(row.getProduct().getPrice());
                 row.setVendorPayment(row.getProduct().getPrice());
             }
