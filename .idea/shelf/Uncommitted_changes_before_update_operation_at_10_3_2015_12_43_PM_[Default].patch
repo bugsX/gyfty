@@ -1,0 +1,270 @@
+Index: app/src/main/java/com/gyfty/promotions/ProductPromotion.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/gyfty/promotions/ProductPromotion.java	(revision 2e28088d74a12349e83b0200646abedebb989bb9)
++++ app/src/main/java/com/gyfty/promotions/ProductPromotion.java	(revision )
+@@ -2,6 +2,7 @@
+ 
+ import com.gyfty.products.GyftyProduct;
+ import com.gyfty.cart.ProductPriceRow;
++import com.gyfty.products.GyftyProductInterface;
+ import com.parse.ParseClassName;
+ 
+ /**
+@@ -20,11 +21,9 @@
+     }
+ 
+     @Override
+-    public boolean isApplicable(GyftyProduct product) {
++    public boolean isApplicable(GyftyProductInterface product) {
+        if(getIsActive() && getActor().getObjectId().equals(product.getObjectId())){
+-
+            return true;
+-
+        }
+         return false;
+     }
+Index: app/src/main/java/com/gyfty/cart/ProductPriceRow.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/gyfty/cart/ProductPriceRow.java	(revision 2e28088d74a12349e83b0200646abedebb989bb9)
++++ app/src/main/java/com/gyfty/cart/ProductPriceRow.java	(revision )
+@@ -1,13 +1,19 @@
+ package com.gyfty.cart;
+ 
+ import com.gyfty.products.GyftyProduct;
++import com.gyfty.products.GyftyProductInterface;
+ 
++import lombok.AllArgsConstructor;
++import lombok.Data;
++
+ /**
+- * Created by Mac on 9/27/15.
++ * Created by akhilch on 9/27/15.
+  */
++
++@Data
+ public class ProductPriceRow {
+ 
+-    GyftyProduct product;
++    GyftyProductInterface product;
+     double promotionDiscount;
+     double commisionAmount;
+     double vendorPayment;
+@@ -15,13 +21,15 @@
+     String error;
+ 
+ 
+-    public GyftyProduct getProduct() {
+ 
++
++    public GyftyProductInterface getProduct() {
++
+         return product;
+ 
+     }
+ 
+-    public void setProduct(GyftyProduct product) {
++    public void setProduct(GyftyProductInterface product) {
+ 
+         this.product = product;
+ 
+Index: app/src/main/java/com/gyfty/promotions/Promotion.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/gyfty/promotions/Promotion.java	(revision 2e28088d74a12349e83b0200646abedebb989bb9)
++++ app/src/main/java/com/gyfty/promotions/Promotion.java	(revision )
+@@ -2,6 +2,7 @@
+ 
+ import com.gyfty.products.GyftyProduct;
+ import com.gyfty.cart.ProductPriceRow;
++import com.gyfty.products.GyftyProductInterface;
+ 
+ import java.util.Date;
+ 
+@@ -30,7 +31,7 @@
+ 
+     public void setIsActive(Boolean value);
+ 
+-    public boolean isApplicable(GyftyProduct product);
++    public boolean isApplicable(GyftyProductInterface product);
+ 
+     public void setVendorPayment(ProductPriceRow row);
+ 
+Index: app/src/main/java/com/gyfty/promotions/CartPromotion.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/gyfty/promotions/CartPromotion.java	(revision 2e28088d74a12349e83b0200646abedebb989bb9)
++++ app/src/main/java/com/gyfty/promotions/CartPromotion.java	(revision )
+@@ -1,23 +1,23 @@
+ package com.gyfty.promotions;
+ 
+-import com.gyfty.products.GyftyProduct;
+ import com.gyfty.cart.ProductPriceRow;
+-import com.gyfty.services.cart.Cart;
++import com.gyfty.cart.Cart;
++import com.gyfty.products.GyftyProductInterface;
+ 
+ /**
+  * Created by Mac on 9/21/15.
+  */
+ public class CartPromotion extends PercentPromotion {
+ 
+-    public com.gyfty.services.cart.Cart.Cart getActor() {
+-        return (com.gyfty.services.cart.Cart.Cart)getParseObject(CartPromotionParams.actor.toString());
++    public Cart getActor() {
++        return (Cart)getParseObject(CartPromotionParams.actor.toString());
+     }
+ 
+-    public void setActor(Cart.Cart value) {
++    public void setActor(Cart value) {
+         put(CartPromotionParams.actor.toString(), value);
+     }
+ 
+-    public boolean isApplicable(GyftyProduct product) {
++    public boolean isApplicable(GyftyProductInterface product) {
+         return getIsActive();
+ 
+     }
+Index: app/src/main/java/com/gyfty/promotions/CategoryPromotion.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/gyfty/promotions/CategoryPromotion.java	(revision 2e28088d74a12349e83b0200646abedebb989bb9)
++++ app/src/main/java/com/gyfty/promotions/CategoryPromotion.java	(revision )
+@@ -1,6 +1,8 @@
+ package com.gyfty.promotions;
+ 
++import com.gyfty.cart.ProductPriceRow;
+ import com.gyfty.category.Category;
++import com.gyfty.products.GyftyProductInterface;
+ import com.parse.ParseClassName;
+ 
+ /**
+@@ -19,6 +21,15 @@
+         put(CategoryPromotionParams.actor.toString(), value);
+     }
+ 
++    @Override
++    public boolean isApplicable(GyftyProductInterface product) {
++       return product.getCategory().getCategory().equals(getActor().getCategory());
++    }
++
++    @Override
++    public void setVendorPayment(ProductPriceRow row) {
++        //Need to be written
++    }
+ 
+ 
+     public enum CategoryPromotionParams {
+Index: app/src/main/java/com/gyfty/products/GyftyProductInterface.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/gyfty/products/GyftyProductInterface.java	(revision )
++++ app/src/main/java/com/gyfty/products/GyftyProductInterface.java	(revision )
+@@ -0,0 +1,15 @@
++package com.gyfty.products;
++
++import com.gyfty.category.Category;
++
++/**
++ * Created by akhilch on 10/3/2015.
++ */
++public interface GyftyProductInterface {
++
++    double getPrice();
++    Category getCategory();;
++    String getObjectId();
++
++
++}
+\ No newline at end of file
+Index: app/src/main/java/com/gyfty/cart/Cart.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/gyfty/cart/Cart.java	(revision 2e28088d74a12349e83b0200646abedebb989bb9)
++++ app/src/main/java/com/gyfty/cart/Cart.java	(revision )
+@@ -119,6 +119,11 @@
+         public void addProductToCart(Cart cart, GyftyProduct product) {
+ 
+             cart.addProduct(product);
++            double price = product.getPrice();
++            double commisionAmount = product.getVendor().getCommisionPercentage() * price/100;
++            double vendorPayment = price - commisionAmount;
++            double priceAfterDiscount = price;
++            ProductPriceRow pprow = new ProductPriceRow(new CartGyftyProduct(product), 0.0, commisionAmount, vendorPayment, priceAfterDiscount, null);
+             cart.saveEventually();
+ 
+         }
+Index: app/src/main/java/com/gyfty/promotions/VendorPromotion.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/gyfty/promotions/VendorPromotion.java	(revision 2e28088d74a12349e83b0200646abedebb989bb9)
++++ app/src/main/java/com/gyfty/promotions/VendorPromotion.java	(revision )
+@@ -1,7 +1,7 @@
+ package com.gyfty.promotions;
+ 
+-import com.gyfty.products.GyftyProduct;
+ import com.gyfty.cart.ProductPriceRow;
++import com.gyfty.products.GyftyProductInterface;
+ import com.gyfty.vendor.Vendor;
+ import com.parse.ParseClassName;
+ 
+@@ -22,7 +22,7 @@
+     }
+ 
+ 
+-    public boolean isApplicable(GyftyProduct product) {
++    public boolean isApplicable(GyftyProductInterface product) {
+ 
+         if (getIsActive() && getActor().getObjectId().equals(product.getObjectId())) {
+ 
+Index: app/src/main/java/com/gyfty/cart/CartGyftyProduct.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/gyfty/cart/CartGyftyProduct.java	(revision 2e28088d74a12349e83b0200646abedebb989bb9)
++++ app/src/main/java/com/gyfty/cart/CartGyftyProduct.java	(revision )
+@@ -1,10 +1,25 @@
+ package com.gyfty.cart;
+ 
+ import com.gyfty.products.GyftyProduct;
++import com.gyfty.products.GyftyProductInterface;
+ 
++import lombok.Data;
++
+ /**
+  * Created by akhilch on 9/28/2015.
+  */
+-public class CartGyftyProduct extends GyftyProduct {
++
++@Data
++public class CartGyftyProduct extends GyftyProduct implements GyftyProductInterface {
++
++    /**
++     *
++     */
++    public CartGyftyProduct(GyftyProduct product) {
++        super();
++    }
++
++    private GyftyProduct product;
++
+ 
+ }
