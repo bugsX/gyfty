@@ -25,15 +25,6 @@ public class PickUpLogistics extends ParseObject implements Logistics {
         put(PickUpLogisticsParams.deliveryMan.toString(),value);
     }
 
-    @Override
-    public Addresses getAddress() {
-        return (Addresses) getParseObject(PickUpLogisticsParams.address.toString());
-    }
-
-    @Override
-    public void setAddress(Addresses value) {
-        put(PickUpLogisticsParams.address.toString(),value);
-    }
 
     @Override
     public GyftyUser getGyftyAdmin() {
@@ -58,7 +49,6 @@ public class PickUpLogistics extends ParseObject implements Logistics {
     public enum PickUpLogisticsParams {
 
         deliveryMan,
-        address,
         gyftyAdmin,
         image,
 

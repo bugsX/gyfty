@@ -1,7 +1,7 @@
 package com.gyfty.decorator;
 
 import com.gyfty.products.CartGyftyProduct;
-import com.gyfty.products.ProductDecorator;
+import com.gyfty.vendor.Vendor;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -53,6 +53,14 @@ public class ProductDecoratorImpl extends ParseObject implements ProductDecorato
         put(ProductDecoratorParams.notes.toString(),value);
     }
 
+    public Vendor getVendor() {
+        return (Vendor) getParseObject(ProductDecoratorParams.vendor.toString());
+    }
+
+    public void setVendor(String value) {
+        put(ProductDecoratorParams.vendor.toString(),value);
+    }
+
     @Override
     public CartGyftyProduct getDecoratedProduct(CartGyftyProduct product) {
         CartGyftyProduct decoratedProduct = new CartGyftyProduct(product) {
@@ -90,7 +98,8 @@ public class ProductDecoratorImpl extends ParseObject implements ProductDecorato
         name,
         costFactor,
         description,
-        notes
+        notes,
+        vendor
 
     }
 

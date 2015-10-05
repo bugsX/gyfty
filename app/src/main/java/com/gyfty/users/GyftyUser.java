@@ -1,9 +1,13 @@
 package com.gyfty.users;
 
+import com.gyfty.products.GyftyProduct;
+import com.gyfty.products.GyftyProductsGroup;
 import com.gyfty.support.Addresses;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
+
+import org.json.JSONException;
 
 /**
  * Created by Mac on 9/19/15.
@@ -16,7 +20,7 @@ public class GyftyUser extends ParseUser {
     }
 
     public void setImage(ParseFile value) {
-        put(GyftyUserParams.image.toString(),value);
+        put(GyftyUserParams.image.toString(), value);
     }
 
     public String getDeviceId() {
@@ -24,7 +28,7 @@ public class GyftyUser extends ParseUser {
     }
 
     public void setDevideId(String value) {
-        put(GyftyUserParams.deviceId.toString(),value);
+        put(GyftyUserParams.deviceId.toString(), value);
     }
 
     public String getPhoneNumber() {
@@ -32,7 +36,7 @@ public class GyftyUser extends ParseUser {
     }
 
     public void setPhoneNumber(String value) {
-        put(GyftyUserParams.phoneNumber.toString(),value);
+        put(GyftyUserParams.phoneNumber.toString(), value);
     }
 
     public String getFacebookId() {
@@ -40,15 +44,15 @@ public class GyftyUser extends ParseUser {
     }
 
     public void setFacebookId(String value) {
-        put(GyftyUserParams.facebookId.toString(),value);
+        put(GyftyUserParams.facebookId.toString(), value);
     }
 
     public Addresses getAddress() {
-        return (Addresses)getParseObject(GyftyUserParams.address.toString());
+        return (Addresses) getParseObject(GyftyUserParams.address.toString());
     }
 
     public void setAddress(Addresses value) {
-        put(GyftyUserParams.address.toString(),value);
+        put(GyftyUserParams.address.toString(), value);
     }
 
     public String getNotificationType() {
@@ -56,7 +60,7 @@ public class GyftyUser extends ParseUser {
     }
 
     public void setNotificationType(String value) {
-        put(GyftyUserParams.notificationType.toString(),value);
+        put(GyftyUserParams.notificationType.toString(), value);
     }
 
     public String getCurrency() {
@@ -64,7 +68,7 @@ public class GyftyUser extends ParseUser {
     }
 
     public void setCurrency(String value) {
-        put(GyftyUserParams.currency.toString(),value);
+        put(GyftyUserParams.currency.toString(), value);
     }
 
     public String getPromoCode() {
@@ -72,10 +76,24 @@ public class GyftyUser extends ParseUser {
     }
 
     public void setPromoCode(String value) {
-        put(GyftyUserParams.promoCode.toString(),value);
+        put(GyftyUserParams.promoCode.toString(), value);
     }
 
+    public GyftyProductsGroup getFavoriteProducts() {
+        return (GyftyProductsGroup) getParseObject(GyftyUserParams.favoriteProducts.toString());
+    }
 
+    public void setFavoriteProducts(GyftyProductsGroup value) {
+        put(GyftyUserParams.favoriteProducts.toString(), value);
+    }
+
+    public GyftyProductsGroup getRecentProducts() {
+        return (GyftyProductsGroup) getParseObject(GyftyUserParams.recentProducts.toString());
+    }
+
+    public void setRecentProducts(GyftyProductsGroup value) {
+        put(GyftyUserParams.recentProducts.toString(), value);
+    }
 
     public enum GyftyUserParams {
 
@@ -87,9 +105,76 @@ public class GyftyUser extends ParseUser {
         notificationType,
         currency,
         promoCode,
+        favoriteProducts,
+        recentProducts,
         otp
 
 
     }
+
+
+    public void addFavoriteProduct(GyftyUser gyftyUser, GyftyProduct gyftyProduct) {
+
+        if (gyftyUser.getFavoriteProducts() == null) {
+
+            GyftyProductsGroup favoriteProducts = new GyftyProductsGroup();
+            favoriteProducts.addGyftyProductToGrp(gyftyProduct);
+            favoriteProducts.saveInBackground();
+            gyftyUser.setFavoriteProducts(favoriteProducts);
+            gyftyUser.saveInBackground();
+
+        }
+
+        else {
+
+            GyftyProductsGroup favoriteProducts = gyftyUser.getFavoriteProducts();
+            favoriteProducts.addGyftyProductToGrp(gyftyProduct);
+            favoriteProducts.saveInBackground();
+
+
+        }
+
+    }
+
+    public void removeFavoriteProduct(GyftyUser gyftyUser, GyftyProduct gyftyProduct) throws JSONException {
+
+        GyftyProductsGroup favoriteProducts = gyftyUser.getFavoriteProducts();
+        favoriteProducts.removeGyftyProductsFromGrp(gyftyProduct);
+        favoriteProducts.saveInBackground();
+
+    }
+
+    public void addRecentProduct(GyftyUser gyftyUser, GyftyProduct gyftyProduct) {
+
+        if (gyftyUser.getRecentProducts() == null) {
+
+            GyftyProductsGroup recentProducts = new GyftyProductsGroup();
+            recentProducts.addGyftyProductToGrp(gyftyProduct);
+            recentProducts.saveInBackground();
+            gyftyUser.setRecentProducts(recentProducts);
+            gyftyUser.saveInBackground();
+
+        }
+
+        else {
+
+            GyftyProductsGroup recentProducts = gyftyUser.getRecentProducts();
+            recentProducts.addGyftyProductToGrp(gyftyProduct);
+            recentProducts.saveInBackground();
+
+
+        }
+
+    }
+
+    public void removeRecentProduct(GyftyUser gyftyUser, GyftyProduct gyftyProduct) throws JSONException {
+
+        GyftyProductsGroup recentProducts = gyftyUser.getRecentProducts();
+        recentProducts.removeGyftyProductsFromGrp(gyftyProduct);
+        recentProducts.saveInBackground();
+
+    }
+
+
 
 }

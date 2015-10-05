@@ -1,8 +1,16 @@
 package com.gyfty.vendor;
 
+import com.gyfty.products.GyftyProduct;
 import com.gyfty.support.Addresses;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Mac on 9/18/15.
@@ -107,6 +115,15 @@ public class Vendor extends ParseObject {
         put(VendorParams.locale.toString(),value);
     }
 
+    public List<Date> getClosedDays() throws JSONException {
+        List<Date> closedDays = new ArrayList();
+        JSONArray closedDaysArray = getJSONArray(VendorParams.closedDays.toString());
+        for (int i=0; i<closedDaysArray.length(); i++) {
+            closedDays.add((Date) closedDaysArray.get(i));
+        }
+        return closedDays;
+    }
+
 
     public enum VendorParams {
         vendorId,
@@ -120,7 +137,8 @@ public class Vendor extends ParseObject {
         branchAddress,
         billingAddress,
         commisionPercentage,
-        locale
+        locale,
+        closedDays
 
 
     }

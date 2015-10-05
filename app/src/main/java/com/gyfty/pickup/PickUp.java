@@ -4,6 +4,8 @@ import com.gyfty.order.Order;
 import com.gyfty.logistics.PickUpLogistics;
 import com.gyfty.logistics.Schedule;
 import com.gyfty.cart.Cart;
+import com.gyfty.order.OrderStatus;
+import com.gyfty.support.Addresses;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
@@ -14,21 +16,6 @@ import com.parse.ParseObject;
 @ParseClassName("PickUp")
 public class PickUp extends ParseObject {
 
-    public Order getOrder() {
-        return (Order)getParseObject(PickUpParams.order.toString());
-    }
-
-    public void setOrder(Order value) {
-        put(PickUpParams.order.toString(),value);
-    }
-
-    public Cart getCart() {
-        return (Cart)getParseObject(PickUpParams.cart.toString());
-    }
-
-    public void setCart(Cart value) {
-        put(PickUpParams.cart.toString(),value);
-    }
 
     public PickUpLogistics getPickUpLogistics() {
         return (PickUpLogistics)getParseObject(PickUpParams.pickUpLogistics.toString());
@@ -36,6 +23,14 @@ public class PickUp extends ParseObject {
 
     public void setPickUpLogistics(PickUpLogistics value) {
         put(PickUpParams.pickUpLogistics.toString(),value);
+    }
+
+    public Addresses getAddress() {
+        return (Addresses) getParseObject(PickUpParams.address.toString());
+    }
+
+    public void setAddress(Addresses value) {
+        put(PickUpParams.address.toString(),value);
     }
 
     public Schedule getSchedule() {
@@ -46,15 +41,48 @@ public class PickUp extends ParseObject {
         put(PickUpParams.schedule.toString(),value);
     }
 
+    public OrderStatus getPickUpStatus() {
+        return (OrderStatus)getParseObject(PickUpParams.pickUpStatus.toString());
+    }
+
+    public void setPickUpStatus(OrderStatus value) {
+        put(PickUpParams.pickUpStatus.toString(),value);
+    }
+
 
 
 
     public enum PickUpParams{
-        order, //Order
-        cart, //Cart
-        pickUpLogistics, // Address
+
+        pickUpLogistics,
+        address, // Address
         schedule, //Schedule
-        status
+        pickUpStatus
     }
+
+
+
+    public PickUp createPickUp(PickUpLogistics pickUpLogistics, Addresses address, Schedule schedule, OrderStatus pickUpStatus) {
+
+        PickUp pickUp = new PickUp();
+        pickUp.setPickUpLogistics(pickUpLogistics);
+        pickUp.setAddress(address);
+        pickUp.setSchedule(schedule);
+        pickUp.setPickUpStatus(pickUpStatus);
+        pickUp.saveInBackground();
+
+        return pickUp;
+
+    }
+
+    public void cancelPickUp(PickUp pickup, OrderStatus orderStatus) {
+
+        pickup.setPickUpStatus(orderStatus);
+        if (pickup.getPickUpLogistics() != null){
+            pickup.getPickUpLogistics().deleteInBackground();
+        }
+        pickup.saveInBackground();
+    }
+
 
 }

@@ -13,10 +13,6 @@ public interface Logistics {
 
     public void setDeliveryMan(DeliveryMan value);
 
-    public Addresses getAddress();
-
-    public void setAddress(Addresses value);
-
     public GyftyUser getGyftyAdmin();
 
     public void setGyftyAdmin(GyftyUser value);

@@ -39,6 +39,7 @@ public class GyftyProductsGroup extends ParseObject{
         list.remove(product);
 
     }
+
     public enum GyftyProductParams {
         productArray
     }

@@ -132,7 +132,7 @@ public class GyftyProduct extends ParseObject{
         quantity,
         outOfStock,
         url,
-        type
+        type // think about this
 
     }
 

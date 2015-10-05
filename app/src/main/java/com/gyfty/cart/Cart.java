@@ -3,6 +3,7 @@ package com.gyfty.cart;
 import android.util.Log;
 
 import com.google.common.collect.Lists;
+import com.gyfty.attributes.GyftyAttributes;
 import com.gyfty.events.GyftyEvent;
 import com.gyfty.logistics.DeliveryLogistics;
 import com.gyfty.logistics.Schedule;
@@ -12,6 +13,7 @@ import com.gyfty.products.CartGyftyProduct;
 import com.gyfty.products.GyftyProduct;
 import com.gyfty.products.GyftyProductsGroup;
 import com.gyfty.promotions.Promotion;
+import com.gyfty.support.Addresses;
 import com.gyfty.users.GyftyUser;
 import com.gyfty.vendor.VendorPayments;
 import com.parse.ParseClassName;
@@ -76,12 +78,14 @@ public class Cart extends ParseObject {
         put(CartParams.schedule.toString(),value);
     }
 
-    public DeliveryLogistics getDeliveryLogistics() {
-        return (DeliveryLogistics)getParseObject(CartParams.deliveryLogistics.toString());
+
+    public Addresses getAddress() {
+        return (Addresses) getParseObject(CartParams.address.toString());
     }
 
-    public void setDeliveryLogistics(DeliveryLogistics value) {
-        put(CartParams.deliveryLogistics.toString(),value);
+
+    public void setAddress(Addresses value) {
+        put(CartParams.address.toString(),value);
     }
 
     public GyftyEvent getEvent() {
@@ -92,13 +96,22 @@ public class Cart extends ParseObject {
         put(CartParams.event.toString(),value);
     }
 
+    public String getTransactionId() {
+        return getString(CartParams.transactionId.toString());
+    }
+
+    public void setTransactionId(String value) {
+        put(CartParams.transactionId.toString(),value);
+    }
+
     public enum CartParams{
         user, //User
         products, //List<Prodcuts>
         pickup, //pickup
         schedule, //schedule
-        deliveryLogistics,
-        event
+        address,
+        event,
+        transactionId
 
 
     }
@@ -110,7 +123,7 @@ public class Cart extends ParseObject {
         public Cart getCart(GyftyUser user) throws ParseException {
 
             ParseQuery<Cart> query = ParseQuery.getQuery("Cart");
-            query.whereEqualTo(CartParams.user.toString(),user);
+            query.whereEqualTo(CartParams.user.toString(), user);
 
             try {
                 cart = query.getFirst();
@@ -152,7 +165,14 @@ public class Cart extends ParseObject {
 
                 total += row.getPriceAfterDiscount();
             }
-            cart.total = total;
+
+            if (total <= Double.valueOf(GyftyAttributes.attributeMap.get("minimumCartTotal"))){
+
+                cart.total = total + Double.valueOf(GyftyAttributes.attributeMap.get("deliveryFee"));
+
+            }
+
+                cart.total = total;
 
         }
 
@@ -187,16 +207,10 @@ public class Cart extends ParseObject {
         }
 
 
-        public void addDeliveryLogisticsToCart(Cart cart, DeliveryLogistics deliveryLogistics){
 
-            cart.setDeliveryLogistics(deliveryLogistics);
-            cart.saveEventually();
+        public void addAddressToCart(Cart cart, Addresses address){
 
-        }
-
-        public void removeDeliveryLogisticsFromCart(Cart cart){
-
-            cart.setDeliveryLogistics(null);
+            cart.setAddress(address);
             cart.saveEventually();
 
         }
@@ -256,7 +270,7 @@ public class Cart extends ParseObject {
 
             Order order = new Order();
             order.setSchedule(cart.getSchedule());
-            order.setDeliveryLogistics(cart.getDeliveryLogistics());
+            order.setAddress(cart.getAddress());
             order.setPickUp(cart.getPickup());
             order.setEvent(cart.getEvent());
             order.setProductGroup(cart.getProducts());
@@ -273,6 +287,28 @@ public class Cart extends ParseObject {
             return order;
 
         }
+
+
+        public Order buildCartWithOrder(Cart cart, Order order){
+
+            order.setProductGroup(cart.getProducts());
+            order.addTransactionIdToOrder(cart.getTransactionId(),order);
+            order.saveEventually();
+
+
+            for(ProductPriceRow productPriceRow:cart.productPrice){
+
+                addVendorPayment(productPriceRow.getProduct(),order.getObjectId(),productPriceRow);
+            }
+
+
+            cart.deleteEventually();
+            return order;
+
+        }
+
+
+
 
 
 
