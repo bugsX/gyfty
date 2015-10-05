@@ -3,6 +3,7 @@ package com.gyfty.decorator;
 import com.gyfty.products.CartGyftyProduct;
 import com.gyfty.products.ProductDecorator;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 
 /**
@@ -75,7 +76,15 @@ public class ProductDecoratorImpl extends ParseObject implements ProductDecorato
         return decoratedProduct;
     }
 
-
+    public void createAndSaveProductDecorator(String name, String costType, double costFactor, String description, String notes) throws ParseException {
+        ProductDecoratorImpl productDecorator = new ProductDecoratorImpl();
+        productDecorator.setName(name);
+        productDecorator.setCostFactor(costFactor);
+        productDecorator.setCostType(costType);
+        productDecorator.setDescription(description);
+        productDecorator.setNotes(notes);
+        productDecorator.save();
+    }
     enum ProductDecoratorParams {
         costType,
         name,
