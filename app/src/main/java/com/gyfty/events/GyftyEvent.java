@@ -1,12 +1,19 @@
 package com.gyfty.events;
 
+import com.google.common.collect.Lists;
 import com.gyfty.products.GyftyProduct;
 import com.gyfty.products.GyftyProductsGroup;
+import com.gyfty.users.GyftyUser;
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Mac on 9/19/15.
@@ -79,6 +86,14 @@ public class GyftyEvent extends ParseObject {
         put(GyftyEventParams.notes.toString(),value);
     }
 
+    public GyftyUser getUser() {
+        return (GyftyUser) getParseObject(GyftyEventParams.user.toString());
+    }
+
+    public void setUser(GyftyUser value) {
+        put(GyftyEventParams.user.toString(),value);
+    }
+
 
     public enum GyftyEventParams {
 
@@ -88,7 +103,50 @@ public class GyftyEvent extends ParseObject {
         deliveryImage,
         reminder,
         gyftyProducts,
-        notes
+        notes,
+        user
+
+    }
+
+    public List<GyftyEvent> getAllGyftyEvents(GyftyUser user){
+
+        final List<GyftyEvent> gyftyEvents = Lists.newArrayList();
+
+        ParseQuery<GyftyEvent> eventQuery = ParseQuery.getQuery("GyftyEvent");
+        eventQuery.whereEqualTo("objectId", user.getObjectId());
+        eventQuery.findInBackground(new FindCallback<GyftyEvent>() {
+            @Override
+            public void done(List<GyftyEvent> eventlist, ParseException e) {
+                if(e == null ) {
+                    gyftyEvents.addAll(eventlist);
+                }
+            }
+
+        });
+        return gyftyEvents;
+    }
+
+
+    public GyftyEvent createGyftyEvent(String name, Date date, ParseFile eventImage, String reminder, String notes, GyftyUser user){
+
+        GyftyEvent gyftyEvent = new GyftyEvent();
+        gyftyEvent.setName(name);
+        gyftyEvent.setDate(date);
+        gyftyEvent.setEventImage(eventImage);
+        gyftyEvent.setReminder(reminder);
+        gyftyEvent.setNotes(notes);
+        gyftyEvent.setUser(user);
+        gyftyEvent.saveInBackground();
+
+        return gyftyEvent;
+
+
+    }
+
+    public void removeGyftyEvent(GyftyEvent gyftyEvent){
+
+        gyftyEvent.deleteInBackground();
+
 
     }
 

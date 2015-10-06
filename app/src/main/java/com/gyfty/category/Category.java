@@ -35,11 +35,20 @@ public class Category extends ParseObject{
         put(CategoryParams.parentCategory.toString(),value);
     }
 
+    public Boolean isActive() {
+        return getBoolean(CategoryParams.isActive.toString());
+    }
+
+    public void isActive(Boolean value) {
+        put(CategoryParams.isActive.toString(),value);
+    }
+
     public enum CategoryParams {
 
         category,
         categoryImage,
-        parentCategory
+        parentCategory,
+        isActive
 
     }
 

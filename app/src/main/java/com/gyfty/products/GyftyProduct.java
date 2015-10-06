@@ -118,6 +118,14 @@ public class GyftyProduct extends ParseObject{
         put(GyftyProductParams.url.toString(),value);
     }
 
+    public Boolean isActive() {
+        return getBoolean(GyftyProductParams.isActive.toString());
+    }
+
+    public void isActive(Boolean value) {
+        put(GyftyProductParams.isActive.toString(),value);
+    }
+
     public enum GyftyProductParams {
 
         gyftyProductId,
@@ -133,6 +141,7 @@ public class GyftyProduct extends ParseObject{
         quantity,
         outOfStock,
         url,
+        isActive,
         type // think about this
 
     }
