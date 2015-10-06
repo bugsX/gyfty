@@ -95,6 +95,22 @@ public class GyftyUser extends ParseUser {
         put(GyftyUserParams.recentProducts.toString(), value);
     }
 
+    public String getOTP() {
+        return getString(GyftyUserParams.otp.toString());
+    }
+
+    public void setOTP(String value) {
+        put(GyftyUserParams.otp.toString(), value);
+    }
+
+    public String getEmailAddress() {
+        return getString(GyftyUserParams.emailAddress.toString());
+    }
+
+    public void setEmailAddress(String value) {
+        put(GyftyUserParams.emailAddress.toString(), value);
+    }
+
     public enum GyftyUserParams {
 
         deviceId,
@@ -107,7 +123,8 @@ public class GyftyUser extends ParseUser {
         promoCode,
         favoriteProducts,
         recentProducts,
-        otp
+        otp,
+        emailAddress
 
 
     }

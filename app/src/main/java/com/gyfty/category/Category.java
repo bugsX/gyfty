@@ -1,6 +1,7 @@
 package com.gyfty.category;
 
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 
 /**
@@ -18,6 +19,14 @@ public class Category extends ParseObject{
         put(CategoryParams.category.toString(),value);
     }
 
+    public ParseFile getCategoryImage() {
+        return getParseFile(CategoryParams.categoryImage.toString());
+    }
+
+    public void setCategoryImage(ParseFile value) {
+        put(CategoryParams.categoryImage.toString(),value);
+    }
+
     public String getParentCategory() {
         return getString(CategoryParams.parentCategory.toString());
     }
@@ -29,6 +38,7 @@ public class Category extends ParseObject{
     public enum CategoryParams {
 
         category,
+        categoryImage,
         parentCategory
 
     }

@@ -2,7 +2,9 @@ package com.gyfty.vendor;
 
 import com.gyfty.products.GyftyProduct;
 import com.gyfty.support.Addresses;
+import com.gyfty.support.Locale;
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 
 import org.json.JSONArray;
@@ -33,6 +35,22 @@ public class Vendor extends ParseObject {
 
     public void setName(String value) {
         put(VendorParams.name.toString(),value);
+    }
+
+    public ParseFile getImage() {
+        return getParseFile(VendorParams.image.toString());
+    }
+
+    public void setImage(ParseFile value) {
+        put(VendorParams.image.toString(),value);
+    }
+
+    public Double getRating() {
+        return getDouble(VendorParams.rating.toString());
+    }
+
+    public void setRating(Double value) {
+        put(VendorParams.rating.toString(),value);
     }
 
     public String getBranch() {
@@ -107,11 +125,11 @@ public class Vendor extends ParseObject {
         put(VendorParams.commisionPercentage.toString(),value);
     }
 
-    public String getLocale() {
-        return getString(VendorParams.locale.toString());
+    public Locale getLocale() {
+        return (Locale) getParseObject(VendorParams.locale.toString());
     }
 
-    public void setLocale(String value) {
+    public void setLocale(Locale value) {
         put(VendorParams.locale.toString(),value);
     }
 
@@ -128,6 +146,8 @@ public class Vendor extends ParseObject {
     public enum VendorParams {
         vendorId,
         name,
+        image,
+        rating,
         branch,
         emailAddress,
         phoneNumber,
@@ -138,7 +158,7 @@ public class Vendor extends ParseObject {
         billingAddress,
         commisionPercentage,
         locale,
-        closedDays
+        closedDays,
 
 
     }

@@ -1,5 +1,6 @@
 package com.gyfty.users;
 
+import com.gyfty.support.Locale;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
@@ -27,11 +28,11 @@ public class DeliveryMan extends GyftyUser {
         put(DeliveryManParams.location.toString(),value);
     }
 
-    public String getLocale() {
-        return getString(DeliveryManParams.locale.toString());
+    public Locale getLocale() {
+        return (Locale) getParseObject(DeliveryManParams.locale.toString());
     }
 
-    public void setLocale(String value) {
+    public void setLocale(Locale value) {
         put(DeliveryManParams.locale.toString(),value);
     }
 

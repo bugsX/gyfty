@@ -1,6 +1,7 @@
 package com.gyfty.products;
 
 import com.gyfty.category.Category;
+import com.gyfty.support.Locale;
 import com.gyfty.vendor.Vendor;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
@@ -85,11 +86,11 @@ public class GyftyProduct extends ParseObject{
         put("vendor",value);
     }
 
-    public String getLocale() {
-        return getString(GyftyProductParams.locale.toString());
+    public Locale getLocale() {
+        return (Locale) getParseObject(GyftyProductParams.locale.toString());
     }
 
-    public void setLocale(String value) {
+    public void setLocale(Locale value) {
         put(GyftyProductParams.locale.toString(),value);
     }
 

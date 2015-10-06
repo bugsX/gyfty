@@ -3,6 +3,8 @@ package com.gyfty.order;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
+import java.util.Date;
+
 /**
  * Created by Mac on 9/26/15.
  */
@@ -11,27 +13,29 @@ import com.parse.ParseObject;
 public class OrderStatus extends ParseObject {
 
 
-    public String getStatusCode() {
-        return getString(OrderStatusParams.statusCode.toString());
+
+
+    public Date getDate() {
+        return getDate(OrderStatusParams.date.toString());
     }
 
-    public void setStatusCode(String value) {
-        put(OrderStatusParams.statusCode.toString(),value);
+    public void setDate(Date value) {
+        put(OrderStatusParams.date.toString(),value);
     }
 
-    public String getStatusMessage() {
-        return getString(OrderStatusParams.statusMessage.toString());
+    public OrderStatusMessage getMessage() {
+        return (OrderStatusMessage)getParseObject(OrderStatusParams.message.toString());
     }
 
-    public void setStatusMessage(String value) {
-        put(OrderStatusParams.statusMessage.toString(),value);
+    public void setMessage(OrderStatusMessage value) {
+        put(OrderStatusParams.message.toString(),value);
     }
 
 
     public enum OrderStatusParams {
 
-        statusCode,
-        statusMessage
+        date,
+        message
 
     }
 

@@ -44,7 +44,7 @@ public class GyftyAttributes extends ParseObject{
     enum GyftyAttributesParams {
 
         attributeValue,
-        attributeName
+        attributeName // Delivery Charge, Pin-code Checking
 
     }
 
