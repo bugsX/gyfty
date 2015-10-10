@@ -3,6 +3,8 @@ package com.gyfty.category;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
+import java.util.List;
+
 /**
  * Created by Mac on 9/23/15.
  */
@@ -18,11 +20,11 @@ public class CategoryCustomSpecs extends ParseObject {
         put(CategoryCustomSpecsParams.category.toString(),value);
     }
 
-    public Object getSpecValue() {
-        return get(CategoryCustomSpecsParams.specList.toString());
+    public List<String> getSpecValue() {
+        return getList(CategoryCustomSpecsParams.specList.toString());
     }
 
-    public void setSpecList(Object value) {
+    public void setSpecList(List<String> value) {
         put(CategoryCustomSpecsParams.specList.toString(),value);
     }
 
@@ -30,7 +32,7 @@ public class CategoryCustomSpecs extends ParseObject {
     public enum CategoryCustomSpecsParams {
 
         category,
-        specList // Can be Array of strings
+        specList // Array of strings
 
     }
 

@@ -22,11 +22,11 @@ public class ProductCustomSpecs extends ParseObject{
     }
 
     public  Object getSpecValue() {
-        return getParseObject(ProductCustomSpecsParams.specValueArray.toString());
+        return get(ProductCustomSpecsParams.specValue.toString());
     }
 
     public void setSpecValue(Object value) {
-        put(ProductCustomSpecsParams.specValueArray.toString(),value);
+        put(ProductCustomSpecsParams.specValue.toString(), value);
     }
 
     public  String getSpecName() {
@@ -41,7 +41,7 @@ public class ProductCustomSpecs extends ParseObject{
     public enum ProductCustomSpecsParams {
 
         product,
-        specValueArray, // Array of Links
+        specValue, // can be Array of Links
         specName
 
     }
