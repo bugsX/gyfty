@@ -37,11 +37,11 @@ public class GyftyProduct extends ParseObject{
         put(GyftyProductParams.description.toString(),value);
     }
 
-    public double getPrice() throws Exception {
+    public Double getPrice() throws Exception {
         return getDouble(GyftyProductParams.price.toString());
     }
 
-    public void setPrice(double value) {
+    public void setPrice(Double value) {
         put(GyftyProductParams.price.toString(),value);
     }
 
@@ -94,20 +94,20 @@ public class GyftyProduct extends ParseObject{
         put(GyftyProductParams.locale.toString(),value);
     }
 
-    public int getQuantity() {
-        return getInt(GyftyProductParams.quantity.toString());
+    public Double getQuantity() {
+        return getDouble(GyftyProductParams.quantity.toString());
     }
 
-    public void setQuantity(int value) {
+    public void setQuantity(Double value) {
         put(GyftyProductParams.quantity.toString(),value);
     }
 
-    public boolean getOutOfStock() {
-        return getBoolean(GyftyProductParams.outOfStock.toString());
+    public Boolean isOutOfStock() {
+        return getBoolean(GyftyProductParams.isOutOfStock.toString());
     }
 
-    public void setOutOfStock(boolean value) {
-        put(GyftyProductParams.outOfStock.toString(),value);
+    public void isOutOfStock(Boolean value) {
+        put(GyftyProductParams.isOutOfStock.toString(),value);
     }
 
     public String getUrl() {
@@ -139,7 +139,7 @@ public class GyftyProduct extends ParseObject{
         leadTime,
         locale,
         quantity,
-        outOfStock,
+        isOutOfStock,
         url,
         isActive,
         type // think about this

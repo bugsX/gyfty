@@ -11,7 +11,7 @@ public abstract class CartGyftyProduct extends GyftyProduct {
         this.product = (CartGyftyProduct) product;
     }
 
-    public double getPrice() throws Exception {
+    public Double getPrice() throws Exception {
         return product.getPrice();
     }
 

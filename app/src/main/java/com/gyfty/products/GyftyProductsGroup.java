@@ -17,7 +17,7 @@ import java.util.List;
 public class GyftyProductsGroup extends ParseObject{
 
     public List<GyftyProduct> getGyftyProductGroup() throws JSONException {
-        List<GyftyProduct> products = new ArrayList();
+        List<GyftyProduct> products = new ArrayList<GyftyProduct>();
         JSONArray productArray = getJSONArray(GyftyProductParams.productArray.toString());
         for (int i=0; i<productArray.length(); i++) {
             products.add((GyftyProduct) productArray.get(i));
@@ -33,10 +33,13 @@ public class GyftyProductsGroup extends ParseObject{
         addAll(GyftyProductParams.productArray.toString(), products);
     }
 
-    public void removeGyftyProductsFromGrp(GyftyProduct product) throws JSONException {
+    public void removeGyftyProductsFromGrp(GyftyProduct product){
 
-        List<GyftyProduct> list = this.getGyftyProductGroup();
-        list.remove(product);
+//        List<GyftyProduct> list = this.getGyftyProductGroup();
+//        list.remove(product);
+        List<GyftyProduct> list = new ArrayList<GyftyProduct>();
+        list.add(product);
+        removeAll(GyftyProductParams.productArray.toString(),list);
 
     }
 

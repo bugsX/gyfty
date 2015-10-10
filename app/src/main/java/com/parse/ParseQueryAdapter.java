@@ -168,15 +168,11 @@ public class ParseQueryAdapter<T extends ParseObject> extends BaseAdapter {
     /**
      * Constructs a {@code ParseQueryAdapter}. Given a {@link ParseObject} subclass, this adapter will
      * fetch and display all {@link ParseObject}s of the specified class, ordered by creation time.
-     *
-     * @param context
+     *  @param context
      *          The activity utilizing this adapter.
      * @param clazz
      *          The {@link ParseObject} subclass type to fetch and display.
      */
-    public ParseQueryAdapter(Context context, Class<? extends ParseObject> clazz) {
-        this(context, ParseObject.getClassName(clazz));
-    }
 
     /**
      * Constructs a {@code ParseQueryAdapter}. Given a {@link ParseObject} subclass, this adapter will

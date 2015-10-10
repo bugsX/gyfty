@@ -4,8 +4,8 @@ import android.util.Log;
 
 import com.google.common.collect.Lists;
 import com.gyfty.attributes.GyftyAttributes;
-import com.gyfty.events.GyftyEvent;
-import com.gyfty.logistics.DeliveryLogistics;
+import com.gyfty.events.Event;
+import com.gyfty.events.GyftyUserEvent;
 import com.gyfty.logistics.Schedule;
 import com.gyfty.order.Order;
 import com.gyfty.pickup.PickUp;
@@ -88,11 +88,11 @@ public class Cart extends ParseObject {
         put(CartParams.address.toString(),value);
     }
 
-    public GyftyEvent getEvent() {
-        return (GyftyEvent) getParseObject(CartParams.event.toString());
+    public Event getEvent() {
+        return (Event) getParseObject(CartParams.event.toString());
     }
 
-    public void setEvent(GyftyEvent value) {
+    public void setEvent(Event value) {
         put(CartParams.event.toString(),value);
     }
 

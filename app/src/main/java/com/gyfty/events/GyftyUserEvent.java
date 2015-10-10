@@ -15,12 +15,11 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Mac on 10/9/15.
+ * Created by Mac on 9/19/15.
  */
 
-@ParseClassName("GyftyEvent")
-public class GyftyEvent extends ParseObject implements Event{
-
+@ParseClassName("GyftyUserEvent")
+public class GyftyUserEvent extends ParseObject implements Event {
 
     public String getName() {
         return getString(GyftyEventParams.name.toString());
@@ -86,6 +85,14 @@ public class GyftyEvent extends ParseObject implements Event{
         put(GyftyEventParams.notes.toString(),value);
     }
 
+    public GyftyUser getUser() {
+        return (GyftyUser) getParseObject(GyftyEventParams.user.toString());
+    }
+
+    public void setUser(GyftyUser value) {
+        put(GyftyEventParams.user.toString(),value);
+    }
+
 
     public enum GyftyEventParams {
 
@@ -96,14 +103,16 @@ public class GyftyEvent extends ParseObject implements Event{
         reminder,
         gyftyProducts,
         notes,
+        user
 
     }
 
-    public List<GyftyUserEvent> getAllGyftyEvents(){
+    public List<GyftyUserEvent> getAllGyftyEvents(GyftyUser user){
 
         final List<GyftyUserEvent> gyftyEvents = Lists.newArrayList();
 
         ParseQuery<GyftyUserEvent> eventQuery = ParseQuery.getQuery("GyftyUserEvent");
+        eventQuery.whereEqualTo("objectId", user.getObjectId());
         eventQuery.findInBackground(new FindCallback<GyftyUserEvent>() {
             @Override
             public void done(List<GyftyUserEvent> eventlist, ParseException e) {
@@ -117,7 +126,7 @@ public class GyftyEvent extends ParseObject implements Event{
     }
 
 
-    public GyftyUserEvent createGyftyEvent(String name, Date date, ParseFile eventImage, String reminder, String notes){
+    public GyftyUserEvent createGyftyEvent(String name, Date date, ParseFile eventImage, String reminder, String notes, GyftyUser user){
 
         GyftyUserEvent gyftyEvent = new GyftyUserEvent();
         gyftyEvent.setName(name);
@@ -125,6 +134,7 @@ public class GyftyEvent extends ParseObject implements Event{
         gyftyEvent.setEventImage(eventImage);
         gyftyEvent.setReminder(reminder);
         gyftyEvent.setNotes(notes);
+        gyftyEvent.setUser(user);
         gyftyEvent.saveInBackground();
 
         return gyftyEvent;
@@ -138,7 +148,6 @@ public class GyftyEvent extends ParseObject implements Event{
 
 
     }
-
 
 
 }

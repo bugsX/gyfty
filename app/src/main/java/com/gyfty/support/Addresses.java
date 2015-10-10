@@ -40,12 +40,12 @@ public class Addresses extends ParseObject {
 
 
 
-    public String getCity() {
-        return getString(AddressesParams.city.toString());
+    public Locale getLocale() {
+        return (Locale) getParseObject(AddressesParams.locale.toString());
     }
 
-    public void setCity(String value) {
-        put(AddressesParams.city.toString(),value);
+    public void setLocale(Locale value) {
+        put(AddressesParams.locale.toString(),value);
     }
 
 
@@ -66,7 +66,7 @@ public class Addresses extends ParseObject {
         name,
         phoneNumber,
         street,
-        city,
+        locale,
         pincode
 
     }

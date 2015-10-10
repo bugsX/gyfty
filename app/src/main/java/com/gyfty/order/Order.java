@@ -1,14 +1,13 @@
 package com.gyfty.order;
 
+import com.gyfty.events.Event;
+import com.gyfty.events.GyftyUserEvent;
 import com.gyfty.logistics.DeliveryLogistics;
 import com.gyfty.logistics.Schedule;
 import com.gyfty.pickup.PickUp;
 import com.gyfty.support.Addresses;
-import com.gyfty.events.GyftyEvent;
-import com.gyfty.logistics.TimeSlot;
 import com.gyfty.products.GyftyProduct;
 import com.gyfty.products.GyftyProductsGroup;
-import com.gyfty.users.DeliveryMan;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -60,11 +59,11 @@ public class Order extends ParseObject{
         put(OrderParams.address.toString(),value);
     }
 
-    public GyftyEvent getEvent() {
-        return (GyftyEvent) getParseObject(OrderParams.event.toString());
+    public Event getEvent() {
+        return (Event) getParseObject(OrderParams.event.toString());
     }
 
-    public void setEvent(GyftyEvent value) {
+    public void setEvent(Event value) {
         put(OrderParams.event.toString(),value);
     }
 

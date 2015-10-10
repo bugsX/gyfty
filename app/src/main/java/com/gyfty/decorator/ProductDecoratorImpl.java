@@ -66,7 +66,7 @@ public class ProductDecoratorImpl extends ParseObject implements ProductDecorato
         CartGyftyProduct decoratedProduct = new CartGyftyProduct(product) {
 
             @Override
-            public double getPrice() throws Exception {
+            public Double getPrice() throws Exception {
                 if (getCostType().equals("Add")) {
                     return super.getPrice() + getCostFactor();
                 } else if (getCostType().equals("Mul")) {

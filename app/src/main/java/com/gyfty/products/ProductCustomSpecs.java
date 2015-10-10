@@ -3,6 +3,13 @@ package com.gyfty.products;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 /**
  * Created by Mac on 9/23/15.
  */
@@ -19,12 +26,12 @@ public class ProductCustomSpecs extends ParseObject{
         put(ProductCustomSpecsParams.product.toString(),value);
     }
 
-    public  String getSpecValue() {
-        return (String) getString(ProductCustomSpecsParams.specValue.toString());
+    public  Object getSpecValue() {
+        return (Object) getParseObject(ProductCustomSpecsParams.specValueArray.toString());
     }
 
-    public void setSpecValue(String value) {
-        put(ProductCustomSpecsParams.specValue.toString(),value);
+    public void setSpecValue(Object value) {
+        put(ProductCustomSpecsParams.specValueArray.toString(),value);
     }
 
     public  String getSpecName() {
@@ -39,7 +46,7 @@ public class ProductCustomSpecs extends ParseObject{
     public enum ProductCustomSpecsParams {
 
         product,
-        specValue,
+        specValueArray, // Array of Links
         specName
 
     }

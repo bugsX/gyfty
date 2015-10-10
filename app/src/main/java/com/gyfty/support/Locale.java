@@ -15,7 +15,7 @@ public class Locale extends ParseObject {
         return getString(LocaleParams.localeName.toString());
     }
 
-    public void setOTP(String value) {
+    public void setLocaleName(String value) {
         put(LocaleParams.localeName.toString(), value);
     }
 

@@ -79,12 +79,19 @@ public  abstract class PercentPromotion extends ParseObject implements Promotion
 
         if(isApplicable(row.getProduct())){
 
-            double price = row.getProduct().getPrice();
-            double discount = getPercentPromotion()*price/100;
-            if(discount > getMaxPromoValue())
-                discount = getMaxPromoValue();
-            row.setPriceAfterDiscount(price-discount);
-            setVendorPayment(row);
+            double price = 0;
+            try {
+                price = row.getProduct().getPrice();
+                double discount = getPercentPromotion()*price/100;
+                if(discount > getMaxPromoValue())
+                    discount = getMaxPromoValue();
+                row.setPriceAfterDiscount(price-discount);
+                setVendorPayment(row);
+
+            } catch (Exception e) {
+                e.printStackTrace(); // change to appropriate error
+            }
+
 
         }
 
