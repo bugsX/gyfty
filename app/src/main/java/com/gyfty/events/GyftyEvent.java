@@ -99,14 +99,14 @@ public class GyftyEvent extends ParseObject implements Event{
 
     }
 
-    public List<GyftyUserEvent> getAllGyftyEvents(){
+    public List<GyftyEvent> getAllGyftyEvents(){
 
-        final List<GyftyUserEvent> gyftyEvents = Lists.newArrayList();
+        final List<GyftyEvent> gyftyEvents = Lists.newArrayList();
 
-        ParseQuery<GyftyUserEvent> eventQuery = ParseQuery.getQuery("GyftyUserEvent");
-        eventQuery.findInBackground(new FindCallback<GyftyUserEvent>() {
+        ParseQuery<GyftyEvent> eventQuery = ParseQuery.getQuery("GyftyEvent");
+        eventQuery.findInBackground(new FindCallback<GyftyEvent>() {
             @Override
-            public void done(List<GyftyUserEvent> eventlist, ParseException e) {
+            public void done(List<GyftyEvent> eventlist, ParseException e) {
                 if(e == null ) {
                     gyftyEvents.addAll(eventlist);
                 }
