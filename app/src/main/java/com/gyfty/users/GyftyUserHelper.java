@@ -5,7 +5,6 @@ import com.gyfty.products.GyftyProductsGroup;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
-import org.json.JSONException;
 
 /**
  * Created by akhilch on 10/6/2015.
@@ -26,7 +25,7 @@ public final class GyftyUserHelper {
         }
     }
 
-    public static void removeFavoriteProduct(GyftyUser gyftyUser, GyftyProduct gyftyProduct) throws JSONException {
+    public static void removeFavoriteProduct(GyftyUser gyftyUser, GyftyProduct gyftyProduct) {
         GyftyProductsGroup favoriteProducts = gyftyUser.getFavoriteProducts();
         favoriteProducts.removeGyftyProductsFromGrp(gyftyProduct);
         favoriteProducts.saveInBackground();
@@ -46,7 +45,7 @@ public final class GyftyUserHelper {
         }
     }
 
-    public static void removeRecentProduct(GyftyUser gyftyUser, GyftyProduct gyftyProduct) throws JSONException {
+    public static void removeRecentProduct(GyftyUser gyftyUser, GyftyProduct gyftyProduct) {
         GyftyProductsGroup recentProducts = gyftyUser.getRecentProducts();
         recentProducts.removeGyftyProductsFromGrp(gyftyProduct);
         recentProducts.saveInBackground();

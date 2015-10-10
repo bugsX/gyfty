@@ -4,8 +4,6 @@ import com.google.common.collect.Lists;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
-import org.json.JSONException;
-
 import java.util.List;
 
 /**
@@ -15,7 +13,7 @@ import java.util.List;
 @ParseClassName("GyftyProductsGroup")
 public class GyftyProductsGroup extends ParseObject{
 
-    public List<GyftyProduct> getGyftyProductGroup() throws JSONException {
+    public List<GyftyProduct> getGyftyProductGroup() {
         List<GyftyProduct> products;
         products = getList(GyftyProductParams.productArray.toString());
         return products;

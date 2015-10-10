@@ -17,8 +17,6 @@ import com.gyfty.vendor.VendorPayments;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
-import org.json.JSONException;
-
 /**
  * Created by akhilch on 10/6/2015.
  */
@@ -60,16 +58,9 @@ public class CartHelper {
     public static void removeProductInCart(Cart cart, GyftyProduct product) {
 
         GyftyProductsGroup productGrp = cart.getProducts();
-        try {
-            if (productGrp.getGyftyProductGroup().size() > 0) {
-
-                productGrp.removeGyftyProductsFromGrp(product);
-            }
-
-        } catch (JSONException e) {
-            Log.e(Cart.DEFAULT_PIN, "Cannot add product to Cart" + e);
+        if (productGrp.getGyftyProductGroup().size() > 0) {
+            productGrp.removeGyftyProductsFromGrp(product);
         }
-
     }
 
     public static void addPickUpToCart(Cart cart, PickUp pickUp) {

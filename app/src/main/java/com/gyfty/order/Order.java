@@ -1,21 +1,16 @@
 package com.gyfty.order;
 
 import com.gyfty.events.Event;
-import com.gyfty.events.GyftyUserEvent;
 import com.gyfty.logistics.DeliveryLogistics;
 import com.gyfty.logistics.Schedule;
 import com.gyfty.pickup.PickUp;
-import com.gyfty.support.Addresses;
 import com.gyfty.products.GyftyProduct;
 import com.gyfty.products.GyftyProductsGroup;
+import com.gyfty.support.Addresses;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -99,12 +94,9 @@ public class Order extends ParseObject{
         put(OrderParams.orderedProducts.toString(),grpProducts);
     }
 
-    public List<String> getTransactionIds() throws JSONException {
-        List<String> transactionIds = new ArrayList();
-        JSONArray transactionIdsArray = getJSONArray(OrderParams.transactionIds.toString());
-        for (int i=0; i<transactionIdsArray.length(); i++) {
-            transactionIds.add((String) transactionIdsArray.get(i));
-        }
+    public List<String> getTransactionIds() {
+        List<String> transactionIds;
+        transactionIds = getList(OrderParams.transactionIds.toString());
         return transactionIds;
     }
 
@@ -122,9 +114,55 @@ public class Order extends ParseObject{
         put(OrderParams.SupriseImage.toString(), value);
     }
 
+    public void addPickUpToOrder(Order order, PickUp pickUp) {
 
+        order.setPickUp(pickUp);
+        order.saveEventually();
 
+    }
 
+    public void removePickUpFromOrder(Order order) {
+
+        order.setPickUp(null);
+        order.saveEventually();
+
+    }
+
+    public void addDeliveryLogisticsToOrder(Order order, DeliveryLogistics deliveryLogistics) {
+
+        order.setDeliveryLogistics(deliveryLogistics);
+        order.saveEventually();
+
+    }
+
+    public void removeDeliveryLogisticsFromOrder(Order order) {
+
+        order.setDeliveryLogistics(null);
+        order.saveEventually();
+
+    }
+
+    public void addOrderStatusToOrder(Order order, OrderStatus orderStatus) {
+
+        order.setOrderStatus(orderStatus);
+        order.saveEventually();
+
+    }
+
+    public void removeOrderStatusFromOrder(Order order) {
+
+        order.setOrderStatus(null);
+        order.saveEventually();
+
+    }
+
+    public void cancelOrder(Order order, OrderStatus orderStatus) {
+
+        order.setOrderStatus(orderStatus);
+        order.setDeliveryLogistics(null);
+        order.saveEventually();
+
+    }
 
     public enum OrderParams {
 
@@ -139,56 +177,6 @@ public class Order extends ParseObject{
         transactionIds,
         SupriseImage
 
-
-    }
-
-    public void addPickUpToOrder(Order order, PickUp pickUp){
-
-        order.setPickUp(pickUp);
-        order.saveEventually();
-
-    }
-
-    public void removePickUpFromOrder(Order order){
-
-        order.setPickUp(null);
-        order.saveEventually();
-
-    }
-
-    public void addDeliveryLogisticsToOrder(Order order, DeliveryLogistics deliveryLogistics){
-
-        order.setDeliveryLogistics(deliveryLogistics);
-        order.saveEventually();
-
-    }
-
-    public void removeDeliveryLogisticsFromOrder(Order order){
-
-        order.setDeliveryLogistics(null);
-        order.saveEventually();
-
-    }
-
-    public void addOrderStatusToOrder(Order order, OrderStatus orderStatus){
-
-        order.setOrderStatus(orderStatus);
-        order.saveEventually();
-
-    }
-
-    public void removeOrderStatusFromOrder(Order order){
-
-        order.setOrderStatus(null);
-        order.saveEventually();
-
-    }
-
-    public void cancelOrder(Order order, OrderStatus orderStatus){
-
-        order.setOrderStatus(orderStatus);
-        order.setDeliveryLogistics(null);
-        order.saveEventually();
 
     }
 
