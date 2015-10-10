@@ -3,15 +3,10 @@ package com.gyfty.products;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 /**
- * Created by Mac on 9/23/15.
+ * Created by akhilch on 9/23/15.
+ *
+ * Store eggless sugarfree flavours weights other-decorators
  */
 
 @ParseClassName("ProductCustomSpecs")
@@ -27,7 +22,7 @@ public class ProductCustomSpecs extends ParseObject{
     }
 
     public  Object getSpecValue() {
-        return (Object) getParseObject(ProductCustomSpecsParams.specValueArray.toString());
+        return getParseObject(ProductCustomSpecsParams.specValueArray.toString());
     }
 
     public void setSpecValue(Object value) {
@@ -35,7 +30,7 @@ public class ProductCustomSpecs extends ParseObject{
     }
 
     public  String getSpecName() {
-        return (String) getString(ProductCustomSpecsParams.specName.toString());
+        return getString(ProductCustomSpecsParams.specName.toString());
     }
 
     public void setSpecName(String value) {

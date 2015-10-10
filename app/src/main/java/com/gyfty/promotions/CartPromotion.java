@@ -1,12 +1,14 @@
 package com.gyfty.promotions;
 
 import com.gyfty.cart.Cart;
-import com.gyfty.products.GyftyProduct;
 import com.gyfty.cart.ProductPriceRow;
+import com.gyfty.products.GyftyProduct;
+import com.parse.ParseClassName;
 
 /**
  * Created by Mac on 9/21/15.
  */
+@ParseClassName("CartPromotion")
 public class CartPromotion extends PercentPromotion {
 
     public Cart getActor() {

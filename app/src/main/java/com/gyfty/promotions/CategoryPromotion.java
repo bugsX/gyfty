@@ -6,7 +6,7 @@ import com.gyfty.products.GyftyProduct;
 import com.parse.ParseClassName;
 
 /**
- * Created by Mac on 9/21/15.
+ * Created by akhich on 9/21/15.
  */
 
 @ParseClassName("CategoryPromotion")

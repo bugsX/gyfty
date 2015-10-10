@@ -6,7 +6,7 @@ import com.parse.ParseObject;
 import java.util.Date;
 
 /**
- * Created by Mac on 9/21/15.
+ * Created by akhilch on 9/21/15.
  */
 public  abstract class PercentPromotion extends ParseObject implements Promotion {
 
@@ -79,7 +79,7 @@ public  abstract class PercentPromotion extends ParseObject implements Promotion
 
         if(isApplicable(row.getProduct())){
 
-            double price = 0;
+            double price;
             try {
                 price = row.getProduct().getPrice();
                 double discount = getPercentPromotion()*price/100;
