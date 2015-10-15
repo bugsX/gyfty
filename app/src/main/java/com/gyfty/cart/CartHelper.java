@@ -9,6 +9,7 @@ import com.gyfty.pickup.PickUp;
 import com.gyfty.products.CartGyftyProduct;
 import com.gyfty.products.GyftyProduct;
 import com.gyfty.products.GyftyProductsGroup;
+import com.gyfty.promotions.InvitationPromotion;
 import com.gyfty.promotions.Promotion;
 import com.gyfty.support.Addresses;
 import com.gyfty.users.GyftyUser;
@@ -105,6 +106,7 @@ public class CartHelper {
 
             promotion.addPromotion(row);
         }
+        cart.promotions.add(promotion);
         calculateTotal(cart);
         cart.saveEventually();
 
@@ -116,7 +118,7 @@ public class CartHelper {
             row.setPriceAfterDiscount(row.getProduct().getPrice());
             row.setVendorPayment(row.getProduct().getPrice());
         }
-
+        cart.promotions.remove(promotion);
         calculateTotal(cart);
         cart.saveEventually();
 
@@ -143,6 +145,12 @@ public class CartHelper {
         order.setEvent(cart.getEvent());
         order.setProductGroup(cart.getProducts());
         order.saveEventually();
+        for (Promotion promotion : cart.promotions) {
+            promotion.promotionUtilized();
+            if (promotion instanceof InvitationPromotion) {
+                cart.getUser().setNewUserPromotionUsed();
+            }
+        }
 
 
         for (ProductPriceRow productPriceRow : cart.productPrice) {

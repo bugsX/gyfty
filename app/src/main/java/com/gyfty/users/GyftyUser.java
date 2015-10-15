@@ -108,6 +108,16 @@ public class GyftyUser extends ParseUser {
         put(GyftyUserParams.emailAddress.toString(), value);
     }
 
+    public boolean isNewUserPromotionUsed() {
+        return getBoolean(GyftyUserParams.isNewUserPromotionUsed.toString());
+
+    }
+
+    public void setNewUserPromotionUsed() {
+        put(GyftyUserParams.isNewUserPromotionUsed.toString(), true);
+        this.saveInBackground();
+
+    }
     public enum GyftyUserParams {
 
         deviceId,
@@ -121,7 +131,8 @@ public class GyftyUser extends ParseUser {
         favoriteProducts,
         recentProducts,
         otp,
-        emailAddress
+        emailAddress,
+        isNewUserPromotionUsed
 
 
     }

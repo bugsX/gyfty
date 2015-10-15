@@ -6,6 +6,7 @@ import com.gyfty.logistics.Schedule;
 import com.gyfty.pickup.PickUp;
 import com.gyfty.products.GyftyProduct;
 import com.gyfty.products.GyftyProductsGroup;
+import com.gyfty.promotions.Promotion;
 import com.gyfty.support.Addresses;
 import com.gyfty.users.GyftyUser;
 import com.parse.ParseClassName;
@@ -21,6 +22,7 @@ import java.util.List;
 public class Cart extends ParseObject {
 
     public List<ProductPriceRow> productPrice = Lists.newArrayList();
+    public List<Promotion> promotions = Lists.newArrayList();
     public double total;
 
     public GyftyUser getUser() {

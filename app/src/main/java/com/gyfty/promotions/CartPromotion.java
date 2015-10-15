@@ -2,8 +2,8 @@ package com.gyfty.promotions;
 
 import com.gyfty.cart.Cart;
 import com.gyfty.cart.ProductPriceRow;
-import com.gyfty.products.GyftyProduct;
 import com.parse.ParseClassName;
+import com.parse.ParseObject;
 
 /**
  * Created by Mac on 9/21/15.
@@ -19,9 +19,14 @@ public class CartPromotion extends PercentPromotion {
         put(CartPromotionParams.actor.toString(), value);
     }
 
-    public boolean isApplicable(GyftyProduct product) {
+    public boolean isApplicable(ParseObject appliedOn) {
         return getIsActive();
 
+    }
+
+    @Override
+    public void promotionUtilized() {
+        //Used in User Promotions to decrement counter.
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.gyfty.promotions;
 
-import com.gyfty.products.GyftyProduct;
 import com.gyfty.cart.ProductPriceRow;
+import com.parse.ParseObject;
 
 import java.util.Date;
 
@@ -10,31 +10,33 @@ import java.util.Date;
  */
 public interface Promotion  {
 
-    public String getPromoType();
+    String getPromoType();
 
-    public void setPromoType(String value);
+    void setPromoType(String value);
 
-    public String getPromoCode();
+    String getPromoCode();
 
-    public void setPromoCode(String value);
+    void setPromoCode(String value);
 
-    public Date getFromDate();
+    Date getFromDate();
 
-    public void setFromDate(Date value);
+    void setFromDate(Date value);
 
-    public Date getToDate();
+    Date getToDate();
 
-    public void setToDate(Date value);
+    void setToDate(Date value);
 
-    public Boolean getIsActive();
+    Boolean getIsActive();
 
-    public void setIsActive(Boolean value);
+    void setIsActive(Boolean value);
 
-    public boolean isApplicable(GyftyProduct product);
+    boolean isApplicable(ParseObject appliedOn);
 
-    public void setVendorPayment(ProductPriceRow row);
+    void setVendorPayment(ProductPriceRow row);
 
-    public void addPromotion(Object object);
+    void addPromotion(Object object);
+
+    void promotionUtilized();
 
 }
 

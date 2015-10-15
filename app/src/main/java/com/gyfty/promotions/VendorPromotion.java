@@ -1,9 +1,9 @@
 package com.gyfty.promotions;
 
-import com.gyfty.products.GyftyProduct;
 import com.gyfty.cart.ProductPriceRow;
 import com.gyfty.vendor.Vendor;
 import com.parse.ParseClassName;
+import com.parse.ParseObject;
 
 /**
  * Created by Mac on 9/21/15.
@@ -22,14 +22,9 @@ public class VendorPromotion extends PercentPromotion {
     }
 
 
-    public boolean isApplicable(GyftyProduct product) {
+    public boolean isApplicable(ParseObject appliedOn) {
 
-        if (getIsActive() && getActor().getObjectId().equals(product.getObjectId())) {
-
-            return true;
-        }
-
-        return false;
+        return getIsActive() && getActor().getObjectId().equals(appliedOn.getObjectId());
 
     }
 
@@ -37,6 +32,11 @@ public class VendorPromotion extends PercentPromotion {
 
         row.setVendorPayment(row.getPriceAfterDiscount());
 
+    }
+
+    @Override
+    public void promotionUtilized() {
+        //Used in User Promotions to decrement counter.
     }
 
 
