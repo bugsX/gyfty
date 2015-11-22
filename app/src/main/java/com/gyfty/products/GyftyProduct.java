@@ -1,5 +1,6 @@
 package com.gyfty.products;
 
+import com.gyfty.Images.Image;
 import com.gyfty.category.Category;
 import com.gyfty.support.Locale;
 import com.gyfty.vendor.Vendor;
@@ -10,6 +11,9 @@ import com.parse.ParseObject;
 /**
  * Created by akhilch on 9/18/15.
  */
+
+// GyftyProduct Table is the products table for gyfty
+
 @ParseClassName("GyftyProduct")
 public class GyftyProduct extends ParseObject{
 
@@ -45,12 +49,20 @@ public class GyftyProduct extends ParseObject{
         put(GyftyProductParams.price.toString(),value);
     }
 
-    public ParseFile getImage() {
-        return getParseFile(GyftyProductParams.image.toString());
+    public Image getImage() {
+        return (Image) getParseFile(GyftyProductParams.image.toString());
     }
 
-    public void setImage(ParseFile value) {
+    public void setImage(Image value) {
         put(GyftyProductParams.image.toString(),value);
+    }
+
+    public ProductImagesGroup getSecondaryImages() {
+        return (ProductImagesGroup)getParseObject(GyftyProductParams.secondaryImages.toString());
+    }
+
+    public void setSecondaryImages(Image value) {
+        put(GyftyProductParams.secondaryImages.toString(),value);
     }
 
     public Double getRating() {
@@ -133,15 +145,16 @@ public class GyftyProduct extends ParseObject{
         description,
         price,
         image,
+        secondaryImages, // ProductImagesGroup
         rating,
         category,
-        vendor,
+        vendor, // Vendor
         leadTime,
-        locale,
-        quantity,
+        locale, // Locale(city)
+        quantity, // Inventory
         isOutOfStock,
         url,
-        isActive,
+        isActive, // currently active or not
         type // think about this
 
     }

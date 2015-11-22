@@ -4,11 +4,14 @@ package com.gyfty.products;
  * Created by akhilch on 9/28/2015.
  */
 
+// CartGyftyProduct is gyftyProduct in cart to get the Price and sellerNotes
+
 public abstract class CartGyftyProduct extends GyftyProduct {
-    CartGyftyProduct product;
+
+    private GyftyProduct product;
 
     public CartGyftyProduct(GyftyProduct product) {
-        this.product = (CartGyftyProduct) product;
+        this.product = product;
     }
 
     public Double getPrice() throws Exception {

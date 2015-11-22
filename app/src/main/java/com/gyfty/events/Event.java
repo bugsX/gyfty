@@ -1,5 +1,6 @@
 package com.gyfty.events;
 
+import com.gyfty.Images.Image;
 import com.gyfty.products.GyftyProduct;
 import com.gyfty.products.GyftyProductsGroup;
 import com.gyfty.users.GyftyUser;
@@ -11,6 +12,9 @@ import java.util.List;
 /**
  * Created by Mac on 10/9/15.
  */
+
+// Event interface has two implementations - GyftyUserEvent and GyftyEvents
+
 public interface Event {
 
     public String getName();
@@ -21,13 +25,9 @@ public interface Event {
 
     public void setDate(Date value);
 
-    public ParseFile getEventImage();
+    public Image getEventImage();
 
-    public void setEventImage(ParseFile value);
-
-    public ParseFile getDeliveryImage();
-
-    public void setDeliveryImage(ParseFile value);
+    public void setEventImage(Image value);
 
     public String getReminder();
 
@@ -42,6 +42,5 @@ public interface Event {
     public String getNotes();
 
     public void setNotes(String value);
-
 
 }

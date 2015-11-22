@@ -9,6 +9,8 @@ import java.util.Date;
  * Created by Mac on 9/21/15.
  */
 
+// Schedule table has the Schedule Date and TimeSlot for a particular order
+
 @ParseClassName("Schedule")
 public class Schedule extends ParseObject{
 
@@ -21,11 +23,11 @@ public class Schedule extends ParseObject{
         put(ScheduleParams.scheduleDate.toString(),value);
     }
 
-    public Date getTimeSlot() {
-        return getDate(ScheduleParams.scheduleSlot.toString());
+    public TimeSlot getTimeSlot() {
+        return (TimeSlot) getParseObject(ScheduleParams.scheduleSlot.toString());
     }
 
-    public void setTimeSlot(Date value) {
+    public void setTimeSlot(TimeSlot value) {
         put(ScheduleParams.scheduleSlot.toString(),value);
     }
 

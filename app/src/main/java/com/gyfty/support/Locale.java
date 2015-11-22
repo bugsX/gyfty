@@ -8,6 +8,8 @@ import com.parse.ParseObject;
  * Created by Mac on 10/5/15.
  */
 
+// Locale table stores the different cities that gyfty operates in along with the city's coordinates
+
 @ParseClassName("Locale")
 public class Locale extends ParseObject {
 
@@ -30,7 +32,7 @@ public class Locale extends ParseObject {
     public enum LocaleParams {
 
         localeName,
-        localeCoordinates
+        localeCoordinates // ParseGeoPoint
 
     }
 

@@ -6,6 +6,7 @@ import com.gyfty.attributes.GyftyAttributes;
 import com.gyfty.logistics.Schedule;
 import com.gyfty.order.Order;
 import com.gyfty.pickup.PickUp;
+import com.gyfty.products.BaseCartGyftyProduct;
 import com.gyfty.products.CartGyftyProduct;
 import com.gyfty.products.GyftyProduct;
 import com.gyfty.products.GyftyProductsGroup;
@@ -21,10 +22,17 @@ import com.parse.ParseQuery;
 /**
  * Created by akhilch on 10/6/2015.
  */
+
+// CartHelper lists the methods that can be performed in and to the cart
+
 public class CartHelper {
-    public static void addProductToCart(Cart cart, CartGyftyProduct product) {
+
+    // Adding GyftyProduct to Cart
+
+    public static void addProductToCart(Cart cart, GyftyProduct product) {
         cart.addProduct(product);
-        double price = Double.MAX_VALUE;
+        CartGyftyProduct cartProduct = new BaseCartGyftyProduct(product);
+        double price = 0.0;
         try {
             price = product.getPrice();
         } catch (Exception e) {
@@ -33,10 +41,12 @@ public class CartHelper {
         double commisionAmount = price * product.getVendor().getCommisionPercentage() / 100;
         double vendorPayment = price - commisionAmount;
         double priceAfterDiscount = price;
-        ProductPriceRow pprow = new ProductPriceRow(product, 0.0, commisionAmount, vendorPayment, priceAfterDiscount, null);
+        ProductPriceRow pprow = new ProductPriceRow(cartProduct, 0.0, commisionAmount, vendorPayment, priceAfterDiscount, null);
         cart.productPrice.add(pprow);
         cart.saveEventually();
     }
+
+    // Calculating Cart Total
 
     private static void calculateTotal(Cart cart) {
 
@@ -46,9 +56,9 @@ public class CartHelper {
             total += row.getPriceAfterDiscount();
         }
 
-        if (total <= Double.valueOf(GyftyAttributes.attributeMap.get("minimumCartTotal"))) {
+        if (total <= Double.valueOf((String) GyftyAttributes.attributeMap.get("minimumCartTotal"))) {
 
-            cart.total = total + Double.valueOf(GyftyAttributes.attributeMap.get("deliveryFee"));
+            cart.total = total + Double.valueOf((String) GyftyAttributes.attributeMap.get("deliveryFee"));
 
         }
 
@@ -56,13 +66,23 @@ public class CartHelper {
 
     }
 
+    // Removing Product from Cart
+
     public static void removeProductInCart(Cart cart, GyftyProduct product) {
 
         GyftyProductsGroup productGrp = cart.getProducts();
         if (productGrp.getGyftyProductGroup().size() > 0) {
             productGrp.removeGyftyProductsFromGrp(product);
         }
+        for(ProductPriceRow pprow : cart.productPrice) {
+            if(pprow.getProduct().equals(product)){
+                cart.productPrice.remove(pprow);
+            }
+        }
+        calculateTotal(cart);
     }
+
+    // adding PickUp to cart
 
     public static void addPickUpToCart(Cart cart, PickUp pickUp) {
 
@@ -70,6 +90,9 @@ public class CartHelper {
         cart.saveEventually();
 
     }
+
+    // removing PickUp from cart
+
 
     public static void removePickUpFromCart(Cart cart) {
 
@@ -79,12 +102,16 @@ public class CartHelper {
 
     }
 
+    // adding Address to cart
+
     public static void addAddressToCart(Cart cart, Addresses address) {
 
         cart.setAddress(address);
         cart.saveEventually();
 
     }
+
+    // adding Schedule to cart
 
     public static void addScheduleToCart(Cart cart, Schedule schedule) {
 
@@ -93,12 +120,16 @@ public class CartHelper {
 
     }
 
+    // removing schedule from cart
+
     public static void removeScheduleFromCart(Cart cart) {
 
         cart.setSchedule(null);
         cart.saveEventually();
 
     }
+
+    // adding promotion to cart
 
     public static void addPromotion(Cart cart, Promotion promotion) {
 
@@ -112,6 +143,8 @@ public class CartHelper {
 
     }
 
+    // removing promotion from cart
+
     public static void removePromotion(Cart cart, Promotion promotion) throws Exception {
 
         for (ProductPriceRow row : cart.productPrice) {
@@ -123,6 +156,8 @@ public class CartHelper {
         cart.saveEventually();
 
     }
+
+    // adds Vendor Payments by product to the Vendor payment Table
 
     public static void addVendorPayment(GyftyProduct product, String ObjectId, ProductPriceRow productPriceRow) {
 
@@ -136,7 +171,11 @@ public class CartHelper {
 
     }
 
+    // builds the cart and returns the order
+
     public static Order buildCart(Cart cart) {
+
+        cart.getAddress().saveInBackground();
 
         Order order = new Order();
         order.setSchedule(cart.getSchedule());
@@ -160,11 +199,12 @@ public class CartHelper {
 
         }
 
-
         cart.deleteEventually();
         return order;
 
     }
+
+    // adds Vendor Notes to each product ordered to the VendorNotes table
 
     private static void addVendorNotes(CartGyftyProduct product, Order order) {
         VendorNotes notes = new VendorNotes();
@@ -176,7 +216,11 @@ public class CartHelper {
         notes.saveInBackground();
     }
 
+    // builds cart with existing order
+
     public static Order buildCartWithOrder(Cart cart, Order order) {
+
+        cart.getAddress().saveInBackground();
 
         order.setProductGroup(cart.getProducts());
         order.addTransactionIdToOrder(cart.getTransactionId(), order);
@@ -187,10 +231,13 @@ public class CartHelper {
             addVendorNotes(productPriceRow.getProduct(), order);
 
         }
+
         cart.deleteEventually();
         return order;
 
     }
+
+    // retrieves or creates Cart
 
     public Cart getCart(GyftyUser user) throws ParseException {
         Cart cart = null;

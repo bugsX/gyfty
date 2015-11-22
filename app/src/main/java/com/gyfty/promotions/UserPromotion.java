@@ -68,4 +68,5 @@ public class UserPromotion extends PercentPromotion {
         actor,
         promoCount
     }
+
 }

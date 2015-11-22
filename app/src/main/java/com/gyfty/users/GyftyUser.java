@@ -4,13 +4,19 @@ import com.gyfty.products.GyftyProductsGroup;
 import com.gyfty.support.Addresses;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
+
+import java.util.Date;
 
 /**
  * Created by Mac on 9/19/15.
  */
-@ParseClassName("User")
-public class GyftyUser extends ParseUser {
+
+// GyftyUser Table stores the User info
+
+@ParseClassName("GyftyUser")
+public class GyftyUser extends ParseObject {
 
     public ParseFile getImage() {
         return getParseFile(GyftyUserParams.image.toString());
@@ -108,31 +114,38 @@ public class GyftyUser extends ParseUser {
         put(GyftyUserParams.emailAddress.toString(), value);
     }
 
-    public boolean isNewUserPromotionUsed() {
-        return getBoolean(GyftyUserParams.isNewUserPromotionUsed.toString());
-
+    public String getName() {
+        return getString(GyftyUserParams.name.toString());
     }
 
-    public void setNewUserPromotionUsed() {
-        put(GyftyUserParams.isNewUserPromotionUsed.toString(), true);
-        this.saveInBackground();
-
+    public void setName(String value) {
+        put(GyftyUserParams.name.toString(), value);
     }
+
+    public Date getBirthday() {
+        return getDate(GyftyUserParams.birthday.toString());
+    }
+
+    public void setBirthday(Date value) {
+        put(GyftyUserParams.birthday.toString(), value);
+    }
+
     public enum GyftyUserParams {
 
         deviceId,
         phoneNumber,
         image,
         facebookId,
-        address,
+        address, // Addresses
         notificationType,
         currency,
         promoCode,
-        favoriteProducts,
-        recentProducts,
+        favoriteProducts, // GyftyProductsGroup
+        recentProducts, // GyftyProductsGroup
         otp,
         emailAddress,
-        isNewUserPromotionUsed
+        name,
+        birthday
 
 
     }

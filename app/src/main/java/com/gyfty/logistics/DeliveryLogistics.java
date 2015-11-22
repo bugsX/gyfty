@@ -10,6 +10,8 @@ import com.parse.ParseObject;
  * Created by Mac on 9/26/15.
  */
 
+// DeliveryLogistics table has the deliveryMan object and the admin responsible for that locale
+
 @ParseClassName("DeliveryLogistics")
 public class DeliveryLogistics extends ParseObject implements Logistics {
 
@@ -37,8 +39,8 @@ public class DeliveryLogistics extends ParseObject implements Logistics {
 
     public enum DeliveryLogisticsParams {
 
-        deliveryMan,
-        gyftyAdmin
+        deliveryMan, // DeliveryMan
+        gyftyAdmin // GyftyUser
 
     }
 }

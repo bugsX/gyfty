@@ -1,5 +1,7 @@
 package com.gyfty.users;
 
+import com.gyfty.Images.Image;
+import com.gyfty.order.OrderStatus;
 import com.gyfty.support.Locale;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
@@ -9,14 +11,16 @@ import com.parse.ParseGeoPoint;
  * Created by Mac on 9/22/15.
  */
 
+// DeliveryMan Table stores the delivery boy info
+
 @ParseClassName("DeliveryMan")
 public class DeliveryMan extends GyftyUser {
 
-    public ParseFile getImage() {
-        return getParseFile(DeliveryManParams.image.toString());
+    public Image getImage() {
+        return (Image) getParseFile(DeliveryManParams.image.toString());
     }
 
-    public void setImage(ParseFile value) {
+    public void setImage(Image value) {
         put(DeliveryManParams.image.toString(),value);
     }
 
@@ -36,11 +40,11 @@ public class DeliveryMan extends GyftyUser {
         put(DeliveryManParams.locale.toString(),value);
     }
 
-    public String getStatus() {
-        return getString(DeliveryManParams.status.toString());
+    public OrderStatus getStatus() {
+        return (OrderStatus)getParseObject(DeliveryManParams.status.toString());
     }
 
-    public void setStatus(String value) {
+    public void setStatus(OrderStatus value) {
         put(DeliveryManParams.status.toString(),value);
     }
 
@@ -49,9 +53,9 @@ public class DeliveryMan extends GyftyUser {
     public enum DeliveryManParams {
 
         image,
-        location,
-        locale,
-        status
+        location, // ParseGeoPoint (coordinates)
+        locale, // city they are operating in
+        status // OrderStatus (their current status)
 
 
     }

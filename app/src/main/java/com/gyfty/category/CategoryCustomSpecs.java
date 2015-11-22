@@ -12,15 +12,15 @@ import java.util.List;
 @ParseClassName("CategoryCustomSpecs")
 public class CategoryCustomSpecs extends ParseObject {
 
-    public Category getProduct() {
+    public Category getCategory() {
         return (Category) getParseObject(CategoryCustomSpecsParams.category.toString());
     }
 
-    public void setProduct(Category value) {
+    public void setCategory(Category value) {
         put(CategoryCustomSpecsParams.category.toString(),value);
     }
 
-    public List<String> getSpecValue() {
+    public List<String> getSpecList() {
         return getList(CategoryCustomSpecsParams.specList.toString());
     }
 
@@ -39,4 +39,3 @@ public class CategoryCustomSpecs extends ParseObject {
 
 
 }
-

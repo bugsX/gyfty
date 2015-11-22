@@ -7,6 +7,9 @@ import com.gyfty.users.GyftyUser;
 /**
  * Created by Mac on 9/26/15.
  */
+
+// Interface for getting and setting the DeliveryMan and GyftyAdmin
+
 public interface Logistics {
 
     public DeliveryMan getDeliveryMan();
@@ -16,7 +19,5 @@ public interface Logistics {
     public GyftyUser getGyftyAdmin();
 
     public void setGyftyAdmin(GyftyUser value);
-
-
 
 }

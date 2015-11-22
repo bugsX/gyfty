@@ -1,6 +1,7 @@
 package com.gyfty.events;
 
 import com.google.common.collect.Lists;
+import com.gyfty.Images.Image;
 import com.gyfty.products.GyftyProduct;
 import com.gyfty.products.GyftyProductsGroup;
 import com.gyfty.users.GyftyUser;
@@ -17,6 +18,8 @@ import java.util.List;
 /**
  * Created by Mac on 10/9/15.
  */
+
+// GyftyEvent table lists the common events listed by gyfty
 
 @ParseClassName("GyftyEvent")
 public class GyftyEvent extends ParseObject implements Event{
@@ -38,20 +41,12 @@ public class GyftyEvent extends ParseObject implements Event{
         put(GyftyEventParams.date.toString(),value);
     }
 
-    public ParseFile getEventImage() {
-        return getParseFile(GyftyEventParams.eventImage.toString());
+    public Image getEventImage() {
+        return (Image) getParseFile(GyftyEventParams.eventImage.toString());
     }
 
-    public void setEventImage(ParseFile value) {
+    public void setEventImage(Image value) {
         put(GyftyEventParams.eventImage.toString(),value);
-    }
-
-    public ParseFile getDeliveryImage() {
-        return getParseFile(GyftyEventParams.deliveryImage.toString());
-    }
-
-    public void setDeliveryImage(ParseFile value) {
-        put(GyftyEventParams.deliveryImage.toString(),value);
     }
 
     public String getReminder() {
@@ -67,15 +62,15 @@ public class GyftyEvent extends ParseObject implements Event{
         return (GyftyProductsGroup) getParseObject(GyftyEventParams.gyftyProducts.toString());
     }
 
-    public void addProduct(GyftyProduct product) {
-        GyftyProductsGroup productGrp = (GyftyProductsGroup) getParseObject(GyftyEventParams.gyftyProducts.toString());
-        productGrp.addGyftyProductToGrp(product);
-        //Remove after testing
-        put(GyftyEventParams.gyftyProducts.toString(),productGrp);
-    }
-
     public void setProductGroup(GyftyProductsGroup grpProducts){
         put(GyftyEventParams.gyftyProducts.toString(), grpProducts);
+    }
+
+    public void addProduct(GyftyProduct product) {
+        GyftyProductsGroup productGrp = getProducts();
+        productGrp.addGyftyProductToGrp(product);
+        //Remove after testing
+        setProductGroup(productGrp);
     }
 
     public String getNotes() {
@@ -92,14 +87,15 @@ public class GyftyEvent extends ParseObject implements Event{
         name,
         date,
         eventImage,
-        deliveryImage,
         reminder,
-        gyftyProducts,
+        gyftyProducts, //GyftyProductsGroup
         notes,
 
     }
 
-    public List<GyftyEvent> getAllGyftyEvents(){
+    // Get all GyftyUserEvents
+
+    public static List<GyftyEvent> getAllGyftyEvents(){
 
         final List<GyftyEvent> gyftyEvents = Lists.newArrayList();
 
@@ -116,10 +112,11 @@ public class GyftyEvent extends ParseObject implements Event{
         return gyftyEvents;
     }
 
+    // create and return GyftyUserEvents
 
-    public GyftyUserEvent createGyftyEvent(String name, Date date, ParseFile eventImage, String reminder, String notes){
+    public static GyftyEvent createGyftyEvent(String name, Date date, Image eventImage, String reminder, String notes){
 
-        GyftyUserEvent gyftyEvent = new GyftyUserEvent();
+        GyftyEvent gyftyEvent = new GyftyEvent();
         gyftyEvent.setName(name);
         gyftyEvent.setDate(date);
         gyftyEvent.setEventImage(eventImage);
@@ -132,7 +129,9 @@ public class GyftyEvent extends ParseObject implements Event{
 
     }
 
-    public void removeGyftyEvent(GyftyUserEvent gyftyEvent){
+    // Delete GyftyUserEvent from Table
+
+    public static void removeGyftyEvent(GyftyEvent gyftyEvent){
 
         gyftyEvent.deleteInBackground();
 

@@ -1,6 +1,7 @@
 package com.gyfty.promotions;
 
 import com.gyfty.cart.ProductPriceRow;
+import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
 import java.util.Date;
@@ -8,6 +9,8 @@ import java.util.Date;
 /**
  * Created by akhilch on 9/21/15.
  */
+
+@ParseClassName("PercentPromotion")
 public  abstract class PercentPromotion extends ParseObject implements Promotion {
 
 

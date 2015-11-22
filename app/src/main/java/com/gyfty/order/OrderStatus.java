@@ -9,10 +9,10 @@ import java.util.Date;
  * Created by Mac on 9/26/15.
  */
 
+// OrderStatus table stores status message and dates for each order
+
 @ParseClassName("OrderStatus")
 public class OrderStatus extends ParseObject {
-
-
 
 
     public Date getDate() {
@@ -35,7 +35,7 @@ public class OrderStatus extends ParseObject {
     public enum OrderStatusParams {
 
         date,
-        message
+        message // OrderStatusMessage
 
     }
 

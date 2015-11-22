@@ -13,6 +13,8 @@ import com.parse.ParseObject;
  * Created by Mac on 9/21/15.
  */
 
+// Pickup table stores the Pickup information for a specific order
+
 @ParseClassName("PickUp")
 public class PickUp extends ParseObject {
 
@@ -54,13 +56,15 @@ public class PickUp extends ParseObject {
 
     public enum PickUpParams{
 
-        pickUpLogistics,
+        pickUpLogistics, //PickUpLogistics
         address, // Address
         schedule, //Schedule
-        pickUpStatus
+        pickUpStatus // OrderStatus
     }
 
 
+
+    // Creates a Pickup and also returns it
 
     public PickUp createPickUp(PickUpLogistics pickUpLogistics, Addresses address, Schedule schedule, OrderStatus pickUpStatus) {
 
@@ -75,9 +79,13 @@ public class PickUp extends ParseObject {
 
     }
 
+    // Cancels a pickup - Changing the orderStatus to cancelled, not deleting it.
+
     public void cancelPickUp(PickUp pickup, OrderStatus orderStatus) {
 
         pickup.setPickUpStatus(orderStatus);
+
+        // removing if any PickUplogistics were assigned
         if (pickup.getPickUpLogistics() != null){
             pickup.getPickUpLogistics().deleteInBackground();
         }

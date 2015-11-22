@@ -7,6 +7,8 @@ import com.parse.ParseObject;
  * Created by Mac on 9/26/15.
  */
 
+// Error Codes Table
+
 @ParseClassName("PromotionErrorCodes")
 public class PromotionErrorCodes extends ParseObject{
 

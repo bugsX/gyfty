@@ -36,7 +36,6 @@ public class ProductPromotion extends PercentPromotion {
 
     }
 
-
     public enum ProductPromotionParams {
 
         actor

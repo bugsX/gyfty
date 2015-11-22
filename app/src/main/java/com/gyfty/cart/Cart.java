@@ -1,5 +1,6 @@
 package com.gyfty.cart;
 
+
 import com.google.common.collect.Lists;
 import com.gyfty.events.Event;
 import com.gyfty.logistics.Schedule;
@@ -15,8 +16,10 @@ import com.parse.ParseObject;
 import java.util.List;
 
 /**
- * Created by akhilch on 9/21/15.
+ * Created by Mac on 9/21/15.
  */
+
+// Cart Table contains all the carts by User
 
 @ParseClassName("Cart")
 public class Cart extends ParseObject {
@@ -45,9 +48,7 @@ public class Cart extends ParseObject {
 
         GyftyProductsGroup productGrp = getProducts();
         if(productGrp==null){
-
             productGrp = new GyftyProductsGroup();
-
         }
         productGrp.addGyftyProductToGrp(product);
     }
@@ -96,11 +97,11 @@ public class Cart extends ParseObject {
 
     public enum CartParams{
         user, //User
-        products, //List<Prodcuts>
-        pickup, //pickup
-        schedule, //schedule
-        address,
-        event,
+        products, // GyftyProductsGroup
+        pickup, // Pickup
+        schedule, // Schedule
+        address, // Addresses
+        event, // GyftyEvent
         transactionId
 
 

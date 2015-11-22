@@ -10,6 +10,8 @@ import com.parse.ParseObject;
  * Created by akhilch on 10/9/2015.
  */
 
+//Vendor Notes table stores notes to be sent to the vendor for a particular order for each product individually
+
 @ParseClassName("VendorNotes")
 public class VendorNotes extends ParseObject {
 
@@ -54,11 +56,11 @@ public class VendorNotes extends ParseObject {
     }
 
     enum VendorNotesParams {
-        vendor,
-        product,
+        vendor, // Vendor
+        product, // GyftyProduct
         notes,
-        orderId,
-        schedule
+        orderId, // Order
+        schedule // Schedule
     }
 
 }

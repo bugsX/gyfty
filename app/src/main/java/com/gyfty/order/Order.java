@@ -1,5 +1,6 @@
 package com.gyfty.order;
 
+import com.gyfty.Images.Image;
 import com.gyfty.events.Event;
 import com.gyfty.logistics.DeliveryLogistics;
 import com.gyfty.logistics.Schedule;
@@ -84,7 +85,7 @@ public class Order extends ParseObject{
     }
 
     public void addProduct(GyftyProduct product) {
-        GyftyProductsGroup productGrp = (GyftyProductsGroup) getParseObject(OrderParams.orderedProducts.toString());
+        GyftyProductsGroup productGrp = getProducts();
         productGrp.addGyftyProductToGrp(product);
         //Remove after testing
         put(OrderParams.orderedProducts.toString(),productGrp);
@@ -105,12 +106,12 @@ public class Order extends ParseObject{
 
     }
 
-    public ParseFile getSurpriseImage() {
-        return getParseFile(OrderParams.SupriseImage.toString());
+    public Image getSurpriseImage() {
+        return (Image) getParseFile(OrderParams.SupriseImage.toString());
     }
 
 
-    public void setSurpriseImage(ParseFile value) {
+    public void setSurpriseImage(Image value) {
         put(OrderParams.SupriseImage.toString(), value);
     }
 

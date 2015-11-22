@@ -1,5 +1,6 @@
 package com.gyfty.vendor;
 
+import com.gyfty.Images.Image;
 import com.gyfty.support.Addresses;
 import com.gyfty.support.Locale;
 import com.parse.ParseClassName;
@@ -12,6 +13,8 @@ import java.util.List;
 /**
  * Created by Mac on 9/18/15.
  */
+
+//Vendor Table stores the vendor information
 
 @ParseClassName("Vendor")
 public class Vendor extends ParseObject {
@@ -32,11 +35,11 @@ public class Vendor extends ParseObject {
         put(VendorParams.name.toString(),value);
     }
 
-    public ParseFile getImage() {
-        return getParseFile(VendorParams.image.toString());
+    public Image getImage() {
+        return (Image) getParseFile(VendorParams.image.toString());
     }
 
-    public void setImage(ParseFile value) {
+    public void setImage(Image value) {
         put(VendorParams.image.toString(),value);
     }
 
@@ -146,11 +149,12 @@ public class Vendor extends ParseObject {
         bankName,
         bankAccountNumber,
         bankIFSCCode,
-        branchAddress,
-        billingAddress,
+        branchAddress, // Addresses
+        billingAddress, // Addresses
         commisionPercentage,
-        locale,
-        closedDays,
+        locale, // Locale (city)
+        closedDays, // List of Closed days
+        //setting closed days?
 
 
     }

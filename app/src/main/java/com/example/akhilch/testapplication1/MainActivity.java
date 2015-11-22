@@ -1,11 +1,15 @@
 package com.example.akhilch.testapplication1;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.ListView;
 
+import com.gyfty.Images.Image;
 import com.gyfty.attributes.GyftyAttributes;
 import com.gyfty.cart.Cart;
+import com.gyfty.cart.CartHelper;
 import com.gyfty.category.Category;
 import com.gyfty.category.CategoryCustomSpecs;
 import com.gyfty.decorator.ProductDecoratorImpl;
@@ -19,6 +23,7 @@ import com.gyfty.order.Order;
 import com.gyfty.order.OrderStatus;
 import com.gyfty.order.OrderStatusMessage;
 import com.gyfty.pickup.PickUp;
+import com.gyfty.products.CartGyftyProduct;
 import com.gyfty.products.GyftyProduct;
 import com.gyfty.products.GyftyProductsGroup;
 import com.gyfty.products.ProductAdapter;
@@ -32,13 +37,26 @@ import com.gyfty.support.Addresses;
 import com.gyfty.support.Locale;
 import com.gyfty.users.DeliveryMan;
 import com.gyfty.users.GyftyUser;
+import com.gyfty.users.GyftyUserHelper;
 import com.gyfty.vendor.Vendor;
 import com.gyfty.vendor.VendorNotes;
 import com.gyfty.vendor.VendorPayments;
+import com.parse.FindCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
+import com.parse.ParseUser;
+
+import org.json.JSONException;
+
+import java.io.ByteArrayOutputStream;
+import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends Activity {
 
@@ -130,7 +148,12 @@ public class MainActivity extends Activity {
 //
 //        });
 
-/*
+
+        Date date = new Date();
+        date.setYear(2015);
+        date.setMonth(3);
+        date.setDate(30);
+
         GyftyAttributes deliveryCharge = new GyftyAttributes();
         deliveryCharge.setAttributeName("deliveryCharge");
         deliveryCharge.setAttributeValue("50");
@@ -140,13 +163,13 @@ public class MainActivity extends Activity {
         minDeliveryValue.setAttributeName("minDeliveryValue");
         minDeliveryValue.setAttributeValue("200");
         minDeliveryValue.saveInBackground();
-
+//
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image);
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] image = stream.toByteArray();
-        ParseFile file = new ParseFile("image.jpg",image);
+        Image file = new Image("image.jpg",image);
         file.saveInBackground();
 
         Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.cake);
@@ -154,7 +177,7 @@ public class MainActivity extends Activity {
         ByteArrayOutputStream stream2 = new ByteArrayOutputStream();
         bitmap2.compress(Bitmap.CompressFormat.JPEG, 100, stream2);
         byte[] image2 = stream2.toByteArray();
-        ParseFile file2 = new ParseFile("cake.jpg",image2);
+        Image file2 = new Image("cake.jpg",image2);
         file2.saveInBackground();
 
         Bitmap bitmap3 = BitmapFactory.decodeResource(getResources(), R.drawable.concu);
@@ -162,7 +185,7 @@ public class MainActivity extends Activity {
         ByteArrayOutputStream stream3 = new ByteArrayOutputStream();
         bitmap3.compress(Bitmap.CompressFormat.JPEG, 100, stream3);
         byte[] image3 = stream3.toByteArray();
-        ParseFile file3 = new ParseFile("cake.jpg",image3);
+        Image file3 = new Image("cake.jpg",image3);
         file3.saveInBackground();
 
 
@@ -266,21 +289,166 @@ public class MainActivity extends Activity {
         GyftyProductsGroup gyftyProductsGroup  = new GyftyProductsGroup();
         gyftyProductsGroup.addGyftyProductToGrp(gyftyProduct);
         gyftyProductsGroup.addGyftyProductToGrp(gyftyProduct2);
+        gyftyProductsGroup.addGyftyProductToGrp(gyftyProduct3);
         gyftyProductsGroup.saveInBackground();
 
 
+        List<GyftyProduct> newgyftyProductsList = gyftyProductsGroup.getGyftyProductGroup();
+        gyftyProductsGroup.setGyftyProductGroup(newgyftyProductsList);
+        gyftyProductsGroup.saveInBackground();
+        gyftyProductsGroup.removeGyftyProductsFromGrp(gyftyProduct2);
+        gyftyProductsGroup.saveInBackground();
 
-        try {
-            List<GyftyProduct> newgyftyProductsList = gyftyProductsGroup.getGyftyProductGroup();
-            gyftyProductsGroup.setGyftyProductGroup(newgyftyProductsList);
-            gyftyProductsGroup.saveInBackground();
-            gyftyProductsGroup.removeGyftyProductsFromGrp(gyftyProduct2);
-            gyftyProductsGroup.saveInBackground();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-*/
+        GyftyUser gyftyUser = new GyftyUser();
+        gyftyUser.setDevideId("11002233");
+        gyftyUser.setPhoneNumber("89782083333");
+        gyftyUser.setImage(file3);
+        gyftyUser.setFacebookId("tom.hanks");
+        gyftyUser.setAddress(address);
+        gyftyUser.setNotificationType("default");
+        gyftyUser.setCurrency("Dollar");
+        gyftyUser.setPromoCode("TOM123");
+        gyftyUser.setOTP("4564");
+        gyftyUser.setEmailAddress("tom.hanks@gmail.com");
+//        gyftyUser.setName("Tom Hanks");
+//        gyftyUser.setBirthday(date);
+//        GyftyUserHelper.addFavoriteProduct(gyftyUser, gyftyProduct3);
+//        GyftyUserHelper.addRecentProduct(gyftyUser, gyftyProduct3);
+//        GyftyUserHelper.addFavoriteProduct(gyftyUser, gyftyProduct2);
+//        GyftyUserHelper.addRecentProduct(gyftyUser, gyftyProduct2);
+//        GyftyUserHelper.removeFavoriteProduct(gyftyUser, gyftyProduct3);
+//        GyftyUserHelper.removeRecentProduct(gyftyUser, gyftyProduct2);
+        gyftyUser.saveInBackground();
 
+        OrderStatusMessage statusMessage=new OrderStatusMessage();
+        statusMessage.setStatusCode("123");
+        statusMessage.setStatusMessage("OnProcess");
+        statusMessage.saveInBackground();
+
+
+        OrderStatus status=new OrderStatus();
+        status.setDate(date);
+        status.setMessage(statusMessage);
+        status.saveInBackground();
+//
+//
+
+        DeliveryMan man=new DeliveryMan();
+        man.setLocation(geoPoint);
+        man.setLocale(locality);
+        man.setStatus(status);
+        man.saveInBackground();
+
+
+        PickUpLogistics logistics = new PickUpLogistics();
+        logistics.setGyftyAdmin(gyftyUser);
+        logistics.setDeliveryMan(man);
+        logistics.saveInBackground();
+
+        TimeSlot time=new TimeSlot();
+        time.setTimeSlotId("123");
+        time.setStartTime(date);
+        time.setEndTime(date);
+        time.saveInBackground();
+
+
+        Schedule schedule=new Schedule();
+        schedule.setTimeSlot(date);
+        schedule.setScheduleDate(date);
+        schedule.saveInBackground();
+
+
+        PickUp pickUp=new PickUp();
+        pickUp.setAddress(address);
+        pickUp.setPickUpStatus(status);
+        pickUp.setSchedule(schedule);
+        pickUp.saveInBackground();
+
+        GyftyUserEvent gyftyUserevent=new GyftyUserEvent();
+        gyftyUserevent.setName("Kadiri");
+        gyftyUserevent.setDate(date);
+        gyftyUserevent.setReminder("hi");
+        gyftyUserevent.setProductGroup(gyftyProductsGroup);
+        gyftyUserevent.setNotes("aaaabbbbaaabbabab");
+        gyftyUserevent.setUser(gyftyUser);
+        gyftyUserevent.saveInBackground();
+
+        GyftyEvent gyftyEvent=new GyftyEvent();
+        gyftyEvent.setName("Phalu");
+        gyftyEvent.setDate(date);
+        gyftyEvent.setReminder("hello");
+        gyftyEvent.setProductGroup(gyftyProductsGroup);
+        gyftyEvent.setNotes("zzzzzzzzzzzzzzzz");
+        gyftyEvent.saveInBackground();
+
+
+        GyftyEvent sampleGyftyEvent = GyftyEvent.createGyftyEvent("Sample Birthday", date, file, "Same Day", "Sample notes");
+        GyftyEvent.createGyftyEvent("Phalu's Birthday", date, file3, "Same Day", "Sample notes");
+        GyftyEvent.removeGyftyEvent(sampleGyftyEvent);
+
+        GyftyUserEvent sampleGyftyUserEvent = GyftyUserEvent.createGyftyUserEvent("another another Birthday", date, file, "Same Day", "Sample notes",gyftyUser);
+        GyftyUserEvent.createGyftyUserEvent("Narri's Birthday", date, file3, "Same Day", "Sample notes",gyftyUser);
+        GyftyUserEvent.removeGyftyUserEvent(sampleGyftyUserEvent);
+
+        PromotionErrorCodes promotionErrorCodes=new PromotionErrorCodes();
+        promotionErrorCodes.setErrorCode("888");
+        promotionErrorCodes.setErrorMessage("Minimum order 200");
+        promotionErrorCodes.saveInBackground();
+
+
+        Cart cart=new Cart();
+        cart.setUser(gyftyUser);
+//        cart.setProducts(gyftyProductsGroup);
+        cart.setPickup(pickUp);
+        cart.setSchedule(schedule);
+        cart.setAddress(address);
+        cart.setEvent(gyftyEvent);
+        cart.setTransactionId("11111");
+        cart.saveInBackground();
+
+
+        DeliveryLogistics deliveryLogistics=new DeliveryLogistics();
+        deliveryLogistics.setDeliveryMan(man);
+        deliveryLogistics.setGyftyAdmin(gyftyUser);
+        deliveryLogistics.saveInBackground();
+
+        Order order = new Order();
+        order.setOrderId("2222");
+        order.setSchedule(schedule);
+        order.setDeliveryLogistics(deliveryLogistics);
+        order.setAddress(address);
+        order.setEvent(gyftyEvent);
+        order.setPickUp(pickUp);
+        order.setOrderStatus(status);
+        order.saveInBackground();
+
+        CartGyftyProduct sampleProduct = (CartGyftyProduct) gyftyProduct;
+        CartHelper.addProductToCart(cart,gyftyProduct);
+        System.out.println(cart.productPrice.get(0).getCommisionAmount());
+
+
+//
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery("ClassName");
+//        query.whereEqualTo("category","cakes");
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//            @Override
+//            public void done(List<ParseObject> list, ParseException e) {
+//                if (e==null) {
+//
+//                    for (ParseObject object:list) {
+//
+//                        //Sample action
+//
+//                    }
+//
+//                }
+//
+//                else {
+//
+//                    //print error
+//                }
+//            }
+//        });
 
     }
 }

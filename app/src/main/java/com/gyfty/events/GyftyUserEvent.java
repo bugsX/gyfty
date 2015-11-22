@@ -1,6 +1,7 @@
 package com.gyfty.events;
 
 import com.google.common.collect.Lists;
+import com.gyfty.Images.Image;
 import com.gyfty.products.GyftyProduct;
 import com.gyfty.products.GyftyProductsGroup;
 import com.gyfty.users.GyftyUser;
@@ -17,6 +18,8 @@ import java.util.List;
 /**
  * Created by Mac on 9/19/15.
  */
+
+// GyftyUserEvent Table lists the events created by the user on gyfty
 
 @ParseClassName("GyftyUserEvent")
 public class GyftyUserEvent extends ParseObject implements Event {
@@ -37,20 +40,12 @@ public class GyftyUserEvent extends ParseObject implements Event {
         put(GyftyEventParams.date.toString(),value);
     }
 
-    public ParseFile getEventImage() {
-        return getParseFile(GyftyEventParams.eventImage.toString());
+    public Image getEventImage() {
+        return (Image) getParseFile(GyftyEventParams.eventImage.toString());
     }
 
-    public void setEventImage(ParseFile value) {
+    public void setEventImage(Image value) {
         put(GyftyEventParams.eventImage.toString(),value);
-    }
-
-    public ParseFile getDeliveryImage() {
-        return getParseFile(GyftyEventParams.deliveryImage.toString());
-    }
-
-    public void setDeliveryImage(ParseFile value) {
-        put(GyftyEventParams.deliveryImage.toString(),value);
     }
 
     public String getReminder() {
@@ -66,15 +61,15 @@ public class GyftyUserEvent extends ParseObject implements Event {
         return (GyftyProductsGroup) getParseObject(GyftyEventParams.gyftyProducts.toString());
     }
 
-    public void addProduct(GyftyProduct product) {
-        GyftyProductsGroup productGrp = (GyftyProductsGroup) getParseObject(GyftyEventParams.gyftyProducts.toString());
-        productGrp.addGyftyProductToGrp(product);
-        //Remove after testing
-        put(GyftyEventParams.gyftyProducts.toString(),productGrp);
-    }
-
     public void setProductGroup(GyftyProductsGroup grpProducts){
         put(GyftyEventParams.gyftyProducts.toString(), grpProducts);
+    }
+
+    public void addProduct(GyftyProduct product) {
+        GyftyProductsGroup productGrp = getProducts();
+        productGrp.addGyftyProductToGrp(product);
+        //Remove after testing
+        setProductGroup(productGrp);
     }
 
     public String getNotes() {
@@ -99,55 +94,57 @@ public class GyftyUserEvent extends ParseObject implements Event {
         name,
         date,
         eventImage,
-        deliveryImage,
-        reminder,
-        gyftyProducts,
+        reminder, // sameday, 3days, week before, none
+        gyftyProducts, // GyftyProductsGroup
         notes,
-        user
+        user // GyftyUser
 
     }
 
-    public List<GyftyUserEvent> getAllGyftyEvents(GyftyUser user){
+    // Get GyftyUserEvents by User
 
-        final List<GyftyUserEvent> gyftyEvents = Lists.newArrayList();
+    public static List<GyftyUserEvent> getAllGyftyUserEvents(GyftyUser user){
+
+        final List<GyftyUserEvent> gyftyUserEvents = Lists.newArrayList();
 
         ParseQuery<GyftyUserEvent> eventQuery = ParseQuery.getQuery("GyftyUserEvent");
-        eventQuery.whereEqualTo("objectId", user.getObjectId());
+//        eventQuery.whereEqualTo("user", user );
         eventQuery.findInBackground(new FindCallback<GyftyUserEvent>() {
             @Override
             public void done(List<GyftyUserEvent> eventlist, ParseException e) {
                 if(e == null ) {
-                    gyftyEvents.addAll(eventlist);
+                    gyftyUserEvents.addAll(eventlist);
                 }
             }
 
         });
-        return gyftyEvents;
+        return gyftyUserEvents;
     }
 
+    // create and return GyftyUserEvents
 
-    public GyftyUserEvent createGyftyEvent(String name, Date date, ParseFile eventImage, String reminder, String notes, GyftyUser user){
+    public static GyftyUserEvent createGyftyUserEvent(String name, Date date, Image eventImage, String reminder, String notes, GyftyUser user){
 
-        GyftyUserEvent gyftyEvent = new GyftyUserEvent();
-        gyftyEvent.setName(name);
-        gyftyEvent.setDate(date);
-        gyftyEvent.setEventImage(eventImage);
-        gyftyEvent.setReminder(reminder);
-        gyftyEvent.setNotes(notes);
-        gyftyEvent.setUser(user);
-        gyftyEvent.saveInBackground();
+        GyftyUserEvent gyftyUserEvent = new GyftyUserEvent();
+        gyftyUserEvent.setName(name);
+        gyftyUserEvent.setDate(date);
+        gyftyUserEvent.setEventImage(eventImage);
+        gyftyUserEvent.setReminder(reminder);
+        gyftyUserEvent.setNotes(notes);
+        gyftyUserEvent.setUser(user);
+        gyftyUserEvent.saveInBackground();
 
-        return gyftyEvent;
-
-
-    }
-
-    public void removeGyftyEvent(GyftyUserEvent gyftyEvent){
-
-        gyftyEvent.deleteInBackground();
+        return gyftyUserEvent;
 
 
     }
 
+    // Delete GyftyUserEvent from Table
+
+    public static void removeGyftyUserEvent(GyftyUserEvent gyftyUserEvent){
+
+        gyftyUserEvent.deleteInBackground();
+
+    }
 
 }

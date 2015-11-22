@@ -9,6 +9,8 @@ import java.util.Date;
  * Created by Mac on 9/19/15.
  */
 
+//Timeslot table has the different timeslots available for a pickUp or a delivery
+
 @ParseClassName("TimeSlot")
 public class TimeSlot extends ParseObject{
 

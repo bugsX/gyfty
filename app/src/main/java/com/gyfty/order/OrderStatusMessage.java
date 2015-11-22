@@ -8,6 +8,8 @@ import com.parse.ParseObject;
  * Created by Mac on 10/5/15.
  */
 
+// OrderStatusMessage table stores the different StatusCodes and messages
+
 @ParseClassName("OrderStatusMessage")
 public class OrderStatusMessage extends ParseObject {
 

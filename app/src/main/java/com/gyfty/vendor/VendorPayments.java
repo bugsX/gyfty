@@ -8,6 +8,8 @@ import com.parse.ParseObject;
  * Created by Mac on 9/26/15.
  */
 
+// VendorPayments table provides the payments for each product
+
 @ParseClassName("VendorPayments")
 public class VendorPayments extends ParseObject {
 
@@ -54,7 +56,7 @@ public class VendorPayments extends ParseObject {
 
     public enum VendorPaymentsParams {
 
-        vendor,
+        vendor, // Vendor
         commisionAmount,
         paymentAmount,
         totalAmount,

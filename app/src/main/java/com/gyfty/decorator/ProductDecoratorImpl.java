@@ -10,6 +10,8 @@ import com.parse.ParseObject;
  * Created by Mac on 10/3/15.
  */
 
+// ProductDecorator Table saves the customizations for each product possible
+
 @ParseClassName("ProductDecorator")
 public class ProductDecoratorImpl extends ParseObject implements ProductDecorator {
 
@@ -61,6 +63,9 @@ public class ProductDecoratorImpl extends ParseObject implements ProductDecorato
         put(ProductDecoratorParams.vendor.toString(),value);
     }
 
+
+    // retrieves the decorated CartGyftyProduct by adding price and notes
+
     @Override
     public CartGyftyProduct getDecoratedProduct(CartGyftyProduct product) {
         CartGyftyProduct decoratedProduct = new CartGyftyProduct(product) {
@@ -84,7 +89,9 @@ public class ProductDecoratorImpl extends ParseObject implements ProductDecorato
         return decoratedProduct;
     }
 
-    public void createAndSaveProductDecorator(String name, String costType, double costFactor, String description, String notes) throws ParseException {
+    // Creates and saves a specific customization to the Product Decorator Table
+
+    public void createAndSaveProductDecorator(String name, String costType, Double costFactor, String description, String notes) throws ParseException {
         ProductDecoratorImpl productDecorator = new ProductDecoratorImpl();
         productDecorator.setName(name);
         productDecorator.setCostFactor(costFactor);
@@ -93,6 +100,7 @@ public class ProductDecoratorImpl extends ParseObject implements ProductDecorato
         productDecorator.setNotes(notes);
         productDecorator.save();
     }
+
     enum ProductDecoratorParams {
         costType,
         name,
