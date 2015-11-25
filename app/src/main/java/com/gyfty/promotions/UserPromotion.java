@@ -15,7 +15,7 @@ import com.parse.ParseObject;
  * (For examplle if 123 sends invitaion to two people, and both use the promocode in the app then the count for 123 is 2.
  * That is number of promotions he is elligible for.)
  */
-@ParseClassName("UserPromotions")
+@ParseClassName("UserPromotion")
 public class UserPromotion extends PercentPromotion {
     @Override
     public boolean isApplicable(ParseObject appliedOn) {

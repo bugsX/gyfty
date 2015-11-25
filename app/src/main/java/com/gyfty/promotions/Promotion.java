@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * Created by Mac on 9/21/15.
  */
-public interface Promotion  {
+public interface Promotion {
 
     String getPromoType();
 

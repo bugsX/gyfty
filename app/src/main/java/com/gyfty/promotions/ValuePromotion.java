@@ -1,5 +1,6 @@
 package com.gyfty.promotions;
 
+import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
 import java.util.Date;
@@ -7,6 +8,7 @@ import java.util.Date;
 /**
  * Created by Mac on 9/21/15.
  */
+@ParseClassName("ValuePromotion")
 public abstract class ValuePromotion extends ParseObject implements Promotion {
 
 
