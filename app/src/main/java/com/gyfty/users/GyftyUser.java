@@ -5,12 +5,11 @@ import com.gyfty.support.Addresses;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
-import com.parse.ParseUser;
 
 import java.util.Date;
 
 /**
- * Created by Mac on 9/19/15.
+ * Created by akhilch on 9/19/15.
  */
 
 // GyftyUser Table stores the User info
@@ -130,6 +129,14 @@ public class GyftyUser extends ParseObject {
         put(GyftyUserParams.birthday.toString(), value);
     }
 
+    public void setNewUserPromotionUsed() {
+        put(GyftyUserParams.isNewUserPromotionUsed.toString(), true);
+    }
+
+    public boolean isNewUserPromotionUsed() {
+        return getBoolean(GyftyUserParams.isNewUserPromotionUsed.toString());
+    }
+
     public enum GyftyUserParams {
 
         deviceId,
@@ -145,9 +152,8 @@ public class GyftyUser extends ParseObject {
         otp,
         emailAddress,
         name,
-        birthday
-
-
+        birthday,
+        isNewUserPromotionUsed
     }
 
 }

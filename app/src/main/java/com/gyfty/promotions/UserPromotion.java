@@ -58,7 +58,7 @@ public class UserPromotion extends PercentPromotion {
     }
 
     public void decrementPromoCode() {
-        //TODO:Checck if decrement present.
+        //TODO:Check if decrement present in parse
         this.increment(UserPromotionParams.promoCount.toString(), -1);
         this.saveInBackground();
 
