@@ -1,24 +1,21 @@
 package com.gyfty.products;
 
+import com.gyfty.vendor.Vendor;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
 /**
- * Created by akhilch on 9/23/15.
- *
- * Store eggless sugarfree flavours weights other-decorators
+ * Created by Mac on 11/22/15.
  */
+@ParseClassName("VendorCustomSpecs")
+public class VendorCustomSpecs extends ParseObject {
 
-@ParseClassName("ProductCustomSpecs")
-public class ProductCustomSpecs extends ParseObject{
-
-
-    public GyftyProduct getProduct() {
-        return (GyftyProduct) getParseObject(ProductCustomSpecsParams.product.toString());
+    public Vendor getVendor() {
+        return (Vendor) getParseObject(ProductCustomSpecsParams.vendor.toString());
     }
 
-    public void setProduct(GyftyProduct value) {
-        put(ProductCustomSpecsParams.product.toString(),value);
+    public void setVendor(Vendor value) {
+        put(ProductCustomSpecsParams.vendor.toString(),value);
     }
 
     public  Object getSpecValue() {
@@ -40,7 +37,7 @@ public class ProductCustomSpecs extends ParseObject{
 
     public enum ProductCustomSpecsParams {
 
-        product,
+        vendor,
         specValue, // Array of Decorators
         specName
 

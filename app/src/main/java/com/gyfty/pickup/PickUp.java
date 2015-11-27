@@ -7,6 +7,7 @@ import com.gyfty.cart.Cart;
 import com.gyfty.order.OrderStatus;
 import com.gyfty.support.Addresses;
 import com.parse.ParseClassName;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
 /**
@@ -51,6 +52,14 @@ public class PickUp extends ParseObject {
         put(PickUpParams.pickUpStatus.toString(),value);
     }
 
+    public ParseGeoPoint getPickUpGeoPoint() {
+        return getParseGeoPoint(PickUpParams.pickUpGeoPoint.toString());
+    }
+
+    public void setPickUpGeoPoint(ParseGeoPoint value) {
+        put(PickUpParams.pickUpGeoPoint.toString(),value);
+    }
+
 
 
 
@@ -59,20 +68,22 @@ public class PickUp extends ParseObject {
         pickUpLogistics, //PickUpLogistics
         address, // Address
         schedule, //Schedule
-        pickUpStatus // OrderStatus
+        pickUpStatus, // OrderStatus
+        pickUpGeoPoint
     }
 
 
 
     // Creates a Pickup and also returns it
 
-    public PickUp createPickUp(PickUpLogistics pickUpLogistics, Addresses address, Schedule schedule, OrderStatus pickUpStatus) {
+    public PickUp createPickUp(PickUpLogistics pickUpLogistics, Addresses address, Schedule schedule, OrderStatus pickUpStatus, ParseGeoPoint pickUpGeoPoint) {
 
         PickUp pickUp = new PickUp();
         pickUp.setPickUpLogistics(pickUpLogistics);
         pickUp.setAddress(address);
         pickUp.setSchedule(schedule);
         pickUp.setPickUpStatus(pickUpStatus);
+        pickUp.setPickUpGeoPoint(pickUpGeoPoint);
         pickUp.saveInBackground();
 
         return pickUp;
