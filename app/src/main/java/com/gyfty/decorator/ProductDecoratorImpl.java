@@ -110,5 +110,4 @@ public class ProductDecoratorImpl extends ParseObject implements ProductDecorato
         vendor
 
     }
-
 }
