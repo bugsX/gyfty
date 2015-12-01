@@ -7,7 +7,6 @@ package com.gyfty.products;
 // BaseCartGyftyProduct is a subclass of CartGyftyProduct
 
 public class BaseCartGyftyProduct extends CartGyftyProduct {
-
     public BaseCartGyftyProduct(GyftyProduct product){
         super(product);
     }

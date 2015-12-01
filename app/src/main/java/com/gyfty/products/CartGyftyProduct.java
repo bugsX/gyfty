@@ -6,20 +6,36 @@ package com.gyfty.products;
 
 // CartGyftyProduct is gyftyProduct in cart to get the Price and sellerNotes
 
-public abstract class CartGyftyProduct extends GyftyProduct {
+public abstract class CartGyftyProduct {
 
     private GyftyProduct product;
+    private CartGyftyProduct cartGyftyProduct;
 
     public CartGyftyProduct(GyftyProduct product) {
         this.product = product;
     }
 
+    public CartGyftyProduct(CartGyftyProduct cartGyftyProduct) {
+        this.cartGyftyProduct = cartGyftyProduct;
+    }
+
     public Double getPrice() throws Exception {
-        return product.getPrice();
+        if (null == cartGyftyProduct) {
+            return product.getPrice();
+        } else {
+            return cartGyftyProduct.getPrice();
+        }
     }
 
     public String getSellerNotes() {
-        return product.getName();
+        if (null == cartGyftyProduct) {
+            return product.getName();
+        } else {
+            return cartGyftyProduct.getSellerNotes();
+        }
     }
 
+    public GyftyProduct getGyftyProduct() {
+        return product;
+    }
 }

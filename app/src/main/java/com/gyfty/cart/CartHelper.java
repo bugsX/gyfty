@@ -75,7 +75,7 @@ public class CartHelper {
             productGrp.removeGyftyProductsFromGrp(product);
         }
         for(ProductPriceRow pprow : cart.productPrice) {
-            if(pprow.getProduct().equals(product)){
+            if (pprow.getProduct().getGyftyProduct().equals(product)) {
                 cart.productPrice.remove(pprow);
             }
         }
@@ -194,7 +194,7 @@ public class CartHelper {
 
         for (ProductPriceRow productPriceRow : cart.productPrice) {
 
-            addVendorPayment(productPriceRow.getProduct(), order.getObjectId(), productPriceRow);
+            addVendorPayment(productPriceRow.getProduct().getGyftyProduct(), order.getObjectId(), productPriceRow);
             addVendorNotes(productPriceRow.getProduct(), order);
 
         }
@@ -209,8 +209,8 @@ public class CartHelper {
     private static void addVendorNotes(CartGyftyProduct product, Order order) {
         VendorNotes notes = new VendorNotes();
         notes.setNotesForProduct(product.getSellerNotes());
-        notes.setVendor(product.getVendor());
-        notes.setGyftyProduct(product);
+        notes.setVendor(product.getGyftyProduct().getVendor());
+        notes.setGyftyProduct(product.getGyftyProduct());
         notes.setOrder(order);
         notes.setSchedule(order.getSchedule());
         notes.saveInBackground();
@@ -227,7 +227,7 @@ public class CartHelper {
         order.saveEventually();
         for (ProductPriceRow productPriceRow : cart.productPrice) {
 
-            addVendorPayment(productPriceRow.getProduct(), order.getObjectId(), productPriceRow);
+            addVendorPayment(productPriceRow.getProduct().getGyftyProduct(), order.getObjectId(), productPriceRow);
             addVendorNotes(productPriceRow.getProduct(), order);
 
         }

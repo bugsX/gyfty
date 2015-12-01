@@ -11,8 +11,9 @@ import com.parse.ParseQuery;
 public class ProductDecoratorHelper {
     private static ParseQuery<ProductDecoratorImpl> productDecoratorParseQuery = new ParseQuery<>("ProductDecorator");
 
-    public static ProductDecorator getProductDecorator(String decoratorId) {
-        ProductDecorator result;
+    public static ProductDecoratorImpl getProductDecorator(String decoratorId) {
+        ProductDecoratorImpl result;
+        ParseQuery<ProductDecoratorImpl> productDecoratorParseQuery = new ParseQuery<>("ProductDecorator");
         try {
             result = productDecoratorParseQuery.get(decoratorId);
         } catch (ParseException e) {

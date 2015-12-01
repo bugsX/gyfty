@@ -1,5 +1,7 @@
 package com.gyfty.promotions;
 
+import android.util.Log;
+
 import com.gyfty.cart.ProductPriceRow;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
@@ -80,7 +82,7 @@ public  abstract class PercentPromotion extends ParseObject implements Promotion
 
     {
 
-        if(isApplicable(row.getProduct())){
+        if (isApplicable(row.getProduct().getGyftyProduct())) {
 
             double price;
             try {
@@ -92,7 +94,7 @@ public  abstract class PercentPromotion extends ParseObject implements Promotion
                 setVendorPayment(row);
 
             } catch (Exception e) {
-                e.printStackTrace(); // change to appropriate error
+                Log.e("PercentPromotion", "addPromotionToProductPrice ", e);
             }
 
 
