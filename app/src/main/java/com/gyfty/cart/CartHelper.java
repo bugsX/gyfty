@@ -79,13 +79,9 @@ public class CartHelper {
         }
 
         if (total <= Double.valueOf((String) GyftyAttributes.attributeMap.get("minimumCartTotal"))) {
-
-            cart.total = total + Double.valueOf((String) GyftyAttributes.attributeMap.get("deliveryFee"));
-
+            total = total + Double.valueOf((String) GyftyAttributes.attributeMap.get("deliveryFee"));
         }
-
         cart.total = total;
-
     }
 
     // Removing Product from Cart
