@@ -1,17 +1,15 @@
 package com.example.akhilch.testapplication1;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.ListView;
 
-import com.gyfty.Images.Image;
 import com.gyfty.attributes.GyftyAttributes;
 import com.gyfty.cart.Cart;
 import com.gyfty.cart.CartHelper;
 import com.gyfty.category.Category;
 import com.gyfty.category.CategoryCustomSpecs;
+import com.gyfty.decorator.ProductDecoratorHelper;
 import com.gyfty.decorator.ProductDecoratorImpl;
 import com.gyfty.events.GyftyEvent;
 import com.gyfty.events.GyftyUserEvent;
@@ -23,6 +21,7 @@ import com.gyfty.order.Order;
 import com.gyfty.order.OrderStatus;
 import com.gyfty.order.OrderStatusMessage;
 import com.gyfty.pickup.PickUp;
+import com.gyfty.products.BaseCartGyftyProduct;
 import com.gyfty.products.CartGyftyProduct;
 import com.gyfty.products.GyftyProduct;
 import com.gyfty.products.GyftyProductsGroup;
@@ -37,26 +36,15 @@ import com.gyfty.support.Addresses;
 import com.gyfty.support.Locale;
 import com.gyfty.users.DeliveryMan;
 import com.gyfty.users.GyftyUser;
-import com.gyfty.users.GyftyUserHelper;
 import com.gyfty.vendor.Vendor;
 import com.gyfty.vendor.VendorNotes;
 import com.gyfty.vendor.VendorPayments;
-import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
-import com.parse.ParseUser;
-
-import org.json.JSONException;
-
-import java.io.ByteArrayOutputStream;
-import java.util.Date;
-import java.util.List;
 
 public class MainActivity extends Activity {
 
@@ -70,7 +58,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
 
-        Parse.initialize(this, "M9x5Ptiz7QZW80z5mwJGBNBW4GupRNY8j5akwZDL", "yAhlN8zeqvi3fshJIHekZvzR1l4th3IL776PZLzV");
+            Parse.initialize(this, "xtjCihTU7fCFgV0szuqdwStLZuvoveuzbaH9OHEU", "Kqw3pXo9I7Oc3qkl7n1FCWAcRBWWE352wUMnDWON");
         ParseInstallation.getCurrentInstallation().saveInBackground();
 
         ParseObject.registerSubclass(GyftyAttributes.class);
@@ -116,7 +104,7 @@ public class MainActivity extends Activity {
         ParseObject.registerSubclass(VendorPayments.class);
         ParseObject.registerSubclass(VendorNotes.class);
 
-
+/*
 
 // Initialize main ParseQueryAdapter
 //        mainAdapter = new ParseQueryAdapter<ParseObject>(this, "Todo");
@@ -353,7 +341,6 @@ public class MainActivity extends Activity {
 
 
         Schedule schedule=new Schedule();
-        schedule.setTimeSlot(date);
         schedule.setScheduleDate(date);
         schedule.saveInBackground();
 
@@ -424,7 +411,38 @@ public class MainActivity extends Activity {
 
         CartGyftyProduct sampleProduct = (CartGyftyProduct) gyftyProduct;
         CartHelper.addProductToCart(cart,gyftyProduct);
-        System.out.println(cart.productPrice.get(0).getCommisionAmount());
+        System.out.println(cart.productPrice.get(0).getCommisionAmount());*/
+            GyftyAttributes.loadAttributeMap();
+            System.out.println(GyftyAttributes.attributeMap.size());
+            for (String key : GyftyAttributes.attributeMap.keySet()) {
+                    System.out.println("Main Method" + GyftyAttributes.attributeMap.get(key));
+            }
+            Cart cart = new Cart();
+
+            try {
+                    GyftyProduct product = new ParseQuery<GyftyProduct>("GyftyProduct").include(GyftyProduct.GyftyProductParams.vendor.toString()).get("1CRdHeucEr");
+                    CartHelper.addProductToCart(cart, product);
+                    CartGyftyProduct cartGyftyProduct = new BaseCartGyftyProduct(product);
+                    ProductDecoratorImpl decorator = ProductDecoratorHelper.getProductDecorator("ZNy5DC1VB5");
+                    CartGyftyProduct cartGyftyProduct1 = decorator.getDecoratedProduct(cartGyftyProduct);
+                    System.out.println(cartGyftyProduct1.getPrice());
+                    CartHelper.addProductToCart(cart, cartGyftyProduct1);
+
+                    try {
+                            System.out.println("\n\n\n\n\nDecorated Price " + cartGyftyProduct1.getPrice() + "Initial Price" + product.getPrice() + "\n\n\n\n\n");
+                    } catch (Exception e) {
+                            System.out.println("Here");
+                            e.printStackTrace();
+                    }
+            } catch (ParseException e) {
+                    System.out.println("NoHere");
+                    e.printStackTrace();
+            } catch (Exception e) {
+                    e.printStackTrace();
+            }
+
+            System.out.println(cart.productPrice);
+            System.out.println(cart.total);
 
 
 //
