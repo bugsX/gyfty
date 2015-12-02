@@ -66,6 +66,7 @@ public class CartHelper {
         double priceAfterDiscount = price;
         ProductPriceRow pprow = new ProductPriceRow(cartGyftyProduct, 0.0, commisionAmount, vendorPayment, priceAfterDiscount, null);
         cart.productPrice.add(pprow);
+        calculateTotal(cart);
     }
 
     // Calculating Cart Total
