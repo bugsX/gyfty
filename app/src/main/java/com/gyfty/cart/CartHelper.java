@@ -32,18 +32,40 @@ public class CartHelper {
     public static void addProductToCart(Cart cart, GyftyProduct product) {
         cart.addProduct(product);
         CartGyftyProduct cartProduct = new BaseCartGyftyProduct(product);
+        addCartProductPriceRows(cart, cartProduct);
+        cart.saveEventually();
+    }
+
+    /**
+     * Add CartGyftyProduct To cart
+     *
+     * @param cart
+     * @param cartGyftyProduct
+     */
+    public static void addProductToCart(Cart cart, CartGyftyProduct cartGyftyProduct) {
+        cart.addProduct(cartGyftyProduct.getGyftyProduct());
+        addCartProductPriceRows(cart, cartGyftyProduct);
+        cart.saveEventually();
+    }
+
+    /**
+     * Whenever a new product is added to cart we need add price row.
+     *
+     * @param cart
+     * @param cartGyftyProduct
+     */
+    public static void addCartProductPriceRows(Cart cart, CartGyftyProduct cartGyftyProduct) {
         double price = 0.0;
         try {
-            price = product.getPrice();
+            price = cartGyftyProduct.getPrice();
         } catch (Exception e) {
             Log.e("Cart", "Get price Failed " + e.getMessage() + "For user " + cart.getUser().getObjectId());
         }
-        double commisionAmount = price * product.getVendor().getCommisionPercentage() / 100;
+        double commisionAmount = price * cartGyftyProduct.getGyftyProduct().getVendor().getCommisionPercentage() / 100;
         double vendorPayment = price - commisionAmount;
         double priceAfterDiscount = price;
-        ProductPriceRow pprow = new ProductPriceRow(cartProduct, 0.0, commisionAmount, vendorPayment, priceAfterDiscount, null);
+        ProductPriceRow pprow = new ProductPriceRow(cartGyftyProduct, 0.0, commisionAmount, vendorPayment, priceAfterDiscount, null);
         cart.productPrice.add(pprow);
-        cart.saveEventually();
     }
 
     // Calculating Cart Total
