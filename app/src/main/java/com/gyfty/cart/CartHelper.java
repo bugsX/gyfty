@@ -33,7 +33,11 @@ public class CartHelper {
         cart.addProduct(product);
         CartGyftyProduct cartProduct = new BaseCartGyftyProduct(product);
         addCartProductPriceRows(cart, cartProduct);
-        cart.saveEventually();
+        try {
+            cart.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -45,7 +49,11 @@ public class CartHelper {
     public static void addProductToCart(Cart cart, CartGyftyProduct cartGyftyProduct) {
         cart.addProduct(cartGyftyProduct.getGyftyProduct());
         addCartProductPriceRows(cart, cartGyftyProduct);
-        cart.saveEventually();
+        try {
+            cart.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -85,6 +93,9 @@ public class CartHelper {
         cart.total = total;
     }
 
+    public static void removeProductInCart(Cart cart, GyftyProduct cartProduct) {
+        removeProductInCart(cart, new BaseCartGyftyProduct(cartProduct));
+    }
 
     /**
      * Remove in cart Method for CartGyftyProduct
@@ -98,12 +109,15 @@ public class CartHelper {
         if (productGrp.getGyftyProductGroup().size() > 0) {
             productGrp.removeGyftyProductsFromGrp(cartProduct.getGyftyProduct());
         }
+        int indexToRemove = 0;
         for(ProductPriceRow pprow : cart.productPrice) {
             if (pprow.getProduct().getGyftyProduct().equals(cartProduct.getGyftyProduct())
                     && pprow.getProduct().getSellerNotes().equals(cartProduct.getSellerNotes())) {
-                cart.productPrice.remove(pprow);
+                break;
             }
+            indexToRemove++;
         }
+        cart.productPrice.remove(indexToRemove);
         calculateTotal(cart);
     }
     // adding PickUp to cart
@@ -111,7 +125,11 @@ public class CartHelper {
     public static void addPickUpToCart(Cart cart, PickUp pickUp) {
 
         cart.setPickup(pickUp);
-        cart.saveEventually();
+        try {
+            cart.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -121,7 +139,11 @@ public class CartHelper {
     public static void removePickUpFromCart(Cart cart) {
 
         cart.setPickup(null);
-        cart.saveEventually();
+        try {
+            cart.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
 
     }
@@ -131,7 +153,11 @@ public class CartHelper {
     public static void addAddressToCart(Cart cart, Addresses address) {
 
         cart.setAddress(address);
-        cart.saveEventually();
+        try {
+            cart.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -140,7 +166,11 @@ public class CartHelper {
     public static void addScheduleToCart(Cart cart, Schedule schedule) {
 
         cart.setSchedule(schedule);
-        cart.saveEventually();
+        try {
+            cart.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -163,7 +193,11 @@ public class CartHelper {
         }
         cart.promotions.add(promotion);
         calculateTotal(cart);
-        cart.saveEventually();
+        try {
+            cart.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -177,7 +211,7 @@ public class CartHelper {
         }
         cart.promotions.remove(promotion);
         calculateTotal(cart);
-        cart.saveEventually();
+        cart.save();
 
     }
 
@@ -191,7 +225,11 @@ public class CartHelper {
         vendorPayments.setCommisionAmount(productPriceRow.getCommisionAmount());
         vendorPayments.setPaymentAmount(productPriceRow.getVendorPayment());
         vendorPayments.setTotalAmount(productPriceRow.getPriceAfterDiscount());
-        vendorPayments.saveEventually();
+        try {
+            vendorPayments.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -237,18 +275,22 @@ public class CartHelper {
         notes.setGyftyProduct(product.getGyftyProduct());
         notes.setOrder(order);
         notes.setSchedule(order.getSchedule());
-        notes.saveInBackground();
+        try {
+            notes.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     // builds cart with existing order
 
-    public static Order buildCartWithOrder(Cart cart, Order order) {
+    public static Order buildCartWithOrder(Cart cart, Order order) throws ParseException {
 
-        cart.getAddress().saveInBackground();
+        cart.getAddress().save();
 
         order.setProductGroup(cart.getProducts());
         order.addTransactionIdToOrder(cart.getTransactionId(), order);
-        order.saveEventually();
+        order.save();
         for (ProductPriceRow productPriceRow : cart.productPrice) {
 
             addVendorPayment(productPriceRow.getProduct().getGyftyProduct(), order.getObjectId(), productPriceRow);
@@ -256,7 +298,7 @@ public class CartHelper {
 
         }
 
-        cart.deleteEventually();
+        cart.delete();
         return order;
 
     }

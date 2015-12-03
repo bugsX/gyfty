@@ -47,7 +47,6 @@ public class Cart extends ParseObject {
     }
 
     public void addProduct(GyftyProduct product){
-
         GyftyProductsGroup productGrp = getProducts();
         if(productGrp==null){
             productGrp = new GyftyProductsGroup();

@@ -204,7 +204,11 @@ public class MainActivity extends Activity {
         address.setStreet("banjara hills");
         address.setLocale(locality);
         address.setPincode("500034");
-        address.saveInBackground();
+        try {
+            address.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 //
 //        Vendor vendor = new Vendor();
 //        vendor.setVendorId("00000001");
@@ -345,14 +349,22 @@ public class MainActivity extends Activity {
 //
         Schedule schedule=new Schedule();
         schedule.setScheduleDate(date);
-        schedule.saveInBackground();
+        try {
+            schedule.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 //
 //
         PickUp pickUp=new PickUp();
         pickUp.setAddress(address);
         pickUp.setPickUpStatus(status);
         pickUp.setSchedule(schedule);
-        pickUp.saveInBackground();
+        try {
+            pickUp.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 //
 //        GyftyUserEvent gyftyUserevent=new GyftyUserEvent();
 //        gyftyUserevent.setName("Kadiri");
@@ -428,13 +440,15 @@ public class MainActivity extends Activity {
                     GyftyProduct product = new ParseQuery<GyftyProduct>("GyftyProduct").include(GyftyProduct.GyftyProductParams.vendor.toString()).get("1CRdHeucEr");
                     CartHelper.addProductToCart(cart, product);
                     CartGyftyProduct cartGyftyProduct = new BaseCartGyftyProduct(product);
+                CartHelper.addProductToCart(cart, cartGyftyProduct);
                     ProductDecoratorImpl decorator = ProductDecoratorHelper.getProductDecorator("ZNy5DC1VB5");
                     CartGyftyProduct cartGyftyProduct1 = decorator.getDecoratedProduct(cartGyftyProduct);
                     CartHelper.addProductToCart(cart, cartGyftyProduct1);
                     CartHelper.addPickUpToCart(cart, pickUp);
                     CartHelper.addAddressToCart(cart, address);
                     CartHelper.addScheduleToCart(cart, schedule);
-
+                CartHelper.removeProductInCart(cart, cartGyftyProduct);
+                CartHelper.removeProductInCart(cart, product);
                     try {
                             System.out.println("\n\n\n\n\nDecorated Price " + cartGyftyProduct1.getPrice() + "Initial Price" + product.getPrice() + "\n\n\n\n\n");
                     } catch (Exception e) {
