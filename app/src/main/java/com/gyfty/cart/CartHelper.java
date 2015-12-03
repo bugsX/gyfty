@@ -73,7 +73,7 @@ public class CartHelper {
 
     private static void calculateTotal(Cart cart) {
 
-        double total = 0;
+        double total = 0.0;
         for (ProductPriceRow row : cart.productPrice) {
 
             total += row.getPriceAfterDiscount();

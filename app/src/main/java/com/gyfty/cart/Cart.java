@@ -1,6 +1,5 @@
 package com.gyfty.cart;
 
-
 import com.google.common.collect.Lists;
 import com.gyfty.events.Event;
 import com.gyfty.logistics.Schedule;
@@ -11,6 +10,7 @@ import com.gyfty.promotions.Promotion;
 import com.gyfty.support.Addresses;
 import com.gyfty.users.GyftyUser;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 
 import java.util.List;
@@ -51,6 +51,12 @@ public class Cart extends ParseObject {
             productGrp = new GyftyProductsGroup();
         }
         productGrp.addGyftyProductToGrp(product);
+        try {
+            productGrp.save();
+            setProducts(productGrp);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public PickUp getPickup() {
