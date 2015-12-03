@@ -85,22 +85,27 @@ public class CartHelper {
         cart.total = total;
     }
 
-    // Removing Product from Cart
 
-    public static void removeProductInCart(Cart cart, GyftyProduct product) {
+    /**
+     * Remove in cart Method for CartGyftyProduct
+     *
+     * @param cart
+     * @param cartProduct
+     */
+    public static void removeProductInCart(Cart cart, CartGyftyProduct cartProduct) {
 
         GyftyProductsGroup productGrp = cart.getProducts();
         if (productGrp.getGyftyProductGroup().size() > 0) {
-            productGrp.removeGyftyProductsFromGrp(product);
+            productGrp.removeGyftyProductsFromGrp(cartProduct.getGyftyProduct());
         }
         for(ProductPriceRow pprow : cart.productPrice) {
-            if (pprow.getProduct().getGyftyProduct().equals(product)) {
+            if (pprow.getProduct().getGyftyProduct().equals(cartProduct.getGyftyProduct())
+                    && pprow.getProduct().getSellerNotes().equals(cartProduct.getSellerNotes())) {
                 cart.productPrice.remove(pprow);
             }
         }
         calculateTotal(cart);
     }
-
     // adding PickUp to cart
 
     public static void addPickUpToCart(Cart cart, PickUp pickUp) {

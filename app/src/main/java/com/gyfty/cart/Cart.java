@@ -1,5 +1,7 @@
 package com.gyfty.cart;
 
+import android.util.Log;
+
 import com.google.common.collect.Lists;
 import com.gyfty.events.Event;
 import com.gyfty.logistics.Schedule;
@@ -53,10 +55,10 @@ public class Cart extends ParseObject {
         productGrp.addGyftyProductToGrp(product);
         try {
             productGrp.save();
-            setProducts(productGrp);
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e(Cart.DEFAULT_PIN, "Unable to save product " + product.getObjectId() + " in product group table.", e);
         }
+        setProducts(productGrp);
     }
 
     public PickUp getPickup() {
