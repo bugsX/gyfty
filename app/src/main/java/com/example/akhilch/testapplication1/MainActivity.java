@@ -447,9 +447,11 @@ public class MainActivity extends Activity {
                     CartHelper.addPickUpToCart(cart, pickUp);
                     CartHelper.addAddressToCart(cart, address);
                     CartHelper.addScheduleToCart(cart, schedule);
-                CartHelper.removeProductInCart(cart, cartGyftyProduct);
                 CartHelper.removeProductInCart(cart, product);
-                    try {
+                GyftyUserEvent gyftyUserEvent = new ParseQuery<GyftyUserEvent>("GyftyUserEvent").get("jFQCAcVpzQ");
+                cart.setEvent(gyftyUserEvent);
+
+                try {
                             System.out.println("\n\n\n\n\nDecorated Price " + cartGyftyProduct1.getPrice() + "Initial Price" + product.getPrice() + "\n\n\n\n\n");
                     } catch (Exception e) {
                             System.out.println("Here");
@@ -464,8 +466,7 @@ public class MainActivity extends Activity {
 
             System.out.println(cart.productPrice);
             System.out.println(cart.total);
-
-
+        Order o = CartHelper.buildCart(cart);
 
 //
 //        ParseQuery<ParseObject> query = ParseQuery.getQuery("ClassName");

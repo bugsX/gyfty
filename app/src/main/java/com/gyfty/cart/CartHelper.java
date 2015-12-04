@@ -36,7 +36,7 @@ public class CartHelper {
         try {
             cart.save();
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("CartHelper", "CartHelper unable to save cart", e);
         }
     }
 
@@ -52,7 +52,7 @@ public class CartHelper {
         try {
             cart.save();
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("CartHelper", "CartHelper unable to save cart", e);
         }
     }
 
@@ -108,6 +108,11 @@ public class CartHelper {
         GyftyProductsGroup productGrp = cart.getProducts();
         if (productGrp.getGyftyProductGroup().size() > 0) {
             productGrp.removeGyftyProductsFromGrp(cartProduct.getGyftyProduct());
+            try {
+                productGrp.save();
+            } catch (ParseException e) {
+                Log.e("CartHelper", "CartHelper unable to remove product from productGrp", e);
+            }
         }
         int indexToRemove = 0;
         for(ProductPriceRow pprow : cart.productPrice) {
@@ -128,7 +133,7 @@ public class CartHelper {
         try {
             cart.save();
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("CartHelper", "CartHelper unable to save cart", e);
         }
 
     }
@@ -142,7 +147,7 @@ public class CartHelper {
         try {
             cart.save();
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("CartHelper", "CartHelper unable to save cart", e);
         }
 
 
@@ -156,7 +161,7 @@ public class CartHelper {
         try {
             cart.save();
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("CartHelper", "CartHelper unable to save cart", e);
         }
 
     }
@@ -169,7 +174,7 @@ public class CartHelper {
         try {
             cart.save();
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("CartHelper", "CartHelper unable to save cart", e);
         }
 
     }
@@ -179,7 +184,12 @@ public class CartHelper {
     public static void removeScheduleFromCart(Cart cart) {
 
         cart.setSchedule(null);
-        cart.saveEventually();
+        try {
+            cart.save();
+        } catch (ParseException e) {
+            Log.e("CartHelper", "CartHelper unable to save cart", e);
+
+        }
 
     }
 
@@ -196,7 +206,7 @@ public class CartHelper {
         try {
             cart.save();
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("CartHelper", "CartHelper unable to save cart", e);
         }
 
     }
@@ -217,11 +227,11 @@ public class CartHelper {
 
     // adds Vendor Payments by product to the Vendor payment Table
 
-    public static void addVendorPayment(GyftyProduct product, String ObjectId, ProductPriceRow productPriceRow) {
+    public static void addVendorPayment(GyftyProduct product, String objectId, ProductPriceRow productPriceRow) {
 
         VendorPayments vendorPayments = new VendorPayments();
         vendorPayments.setVendor(product.getVendor());
-        vendorPayments.setObjectId(ObjectId);
+        vendorPayments.setOrderId(objectId);
         vendorPayments.setCommisionAmount(productPriceRow.getCommisionAmount());
         vendorPayments.setPaymentAmount(productPriceRow.getVendorPayment());
         vendorPayments.setTotalAmount(productPriceRow.getPriceAfterDiscount());
@@ -229,6 +239,7 @@ public class CartHelper {
             vendorPayments.save();
         } catch (ParseException e) {
             e.printStackTrace();
+            Log.e("CartHelper unable to save vendorPayments", e.toString(), e);
         }
 
     }
@@ -239,13 +250,18 @@ public class CartHelper {
 
         cart.getAddress().saveInBackground();
 
-        Order order = new Order();
+        final Order order = new Order();
         order.setSchedule(cart.getSchedule());
         order.setAddress(cart.getAddress());
         order.setPickUp(cart.getPickup());
         order.setEvent(cart.getEvent());
         order.setProductGroup(cart.getProducts());
-        order.saveEventually();
+        try {
+            order.save();
+            System.out.println(order.getObjectId());
+        } catch (ParseException e) {
+            Log.e(Order.DEFAULT_PIN, "CartHelper unable to save Order ", e);
+        }
         for (Promotion promotion : cart.promotions) {
             promotion.promotionUtilized();
             if (promotion instanceof InvitationPromotion) {
@@ -261,7 +277,11 @@ public class CartHelper {
 
         }
 
-        cart.deleteEventually();
+/*        try {
+            cart.delete();
+        } catch (ParseException e) {
+            Log.e("CartHelper", "CartHelper unable to delete cart", e);
+        }*/
         return order;
 
     }
@@ -278,7 +298,7 @@ public class CartHelper {
         try {
             notes.save();
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("CartHelper", "CartHelper unable to save notes", e);
         }
     }
 
@@ -320,7 +340,7 @@ public class CartHelper {
 
         } catch (ParseException e) {
 
-            Log.e(Cart.DEFAULT_PIN, "Cannot find cart" + e);
+            Log.e(Cart.DEFAULT_PIN, "Cannot find cart", e);
         }
 
         return cart;

@@ -9,7 +9,6 @@ import com.gyfty.products.GyftyProduct;
 import com.gyfty.products.GyftyProductsGroup;
 import com.gyfty.support.Addresses;
 import com.parse.ParseClassName;
-import com.parse.ParseFile;
 import com.parse.ParseObject;
 
 import java.util.List;
@@ -22,11 +21,7 @@ import java.util.List;
 public class Order extends ParseObject{
 
     public String getOrderId() {
-        return getString(OrderParams.orderId.toString());
-    }
-
-    public void setOrderId(String value) {
-        put(OrderParams.orderId.toString(),value);
+        return this.getObjectId();
     }
 
     public Schedule getSchedule() {

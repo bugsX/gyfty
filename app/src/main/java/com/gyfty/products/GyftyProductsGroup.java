@@ -1,6 +1,5 @@
 package com.gyfty.products;
 
-import com.google.common.collect.Lists;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
@@ -33,8 +32,10 @@ public class GyftyProductsGroup extends ParseObject{
 
     //removing a specific product from a gyftyproduct group
     public void removeGyftyProductsFromGrp(GyftyProduct product){
-        List<GyftyProduct> list = Lists.newArrayList(product);
-        removeAll(GyftyProductParams.productArray.toString(), list);
+        List<GyftyProduct> list = getGyftyProductGroup();
+        list.remove(product);
+        System.out.println(list);
+        setGyftyProductGroup(list);
     }
 
     public enum GyftyProductParams {
