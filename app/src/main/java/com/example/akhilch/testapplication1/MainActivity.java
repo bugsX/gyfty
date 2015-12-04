@@ -30,7 +30,9 @@ import com.gyfty.products.ProductCustomSpecs;
 import com.gyfty.promotions.CartPromotion;
 import com.gyfty.promotions.CategoryPromotion;
 import com.gyfty.promotions.ProductPromotion;
+import com.gyfty.promotions.Promotion;
 import com.gyfty.promotions.PromotionErrorCodes;
+import com.gyfty.promotions.PromotionHelper;
 import com.gyfty.promotions.VendorPromotion;
 import com.gyfty.support.Addresses;
 import com.gyfty.support.Locale;
@@ -48,6 +50,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
 
 import java.util.Date;
+
 
 public class MainActivity extends Activity {
 
@@ -436,9 +439,19 @@ public class MainActivity extends Activity {
             }
             Cart cart = new Cart();
 
+
             try {
                     GyftyProduct product = new ParseQuery<GyftyProduct>("GyftyProduct").include(GyftyProduct.GyftyProductParams.vendor.toString()).get("1CRdHeucEr");
-                    CartHelper.addProductToCart(cart, product);
+/*                ProductPromotion promo = new ProductPromotion();
+                promo.setFromDate(date);
+                promo.setIsActive(true);
+                promo.setPromoType("ProductPromotion");
+                promo.setPromoCode("Testing");
+                promo.setActor(product);
+                promo.setMaxPromoValue((double) 3000);
+                promo.setPercentPromotion((double) 10);
+                promo.save();*/
+                CartHelper.addProductToCart(cart, product);
                     CartGyftyProduct cartGyftyProduct = new BaseCartGyftyProduct(product);
                 CartHelper.addProductToCart(cart, cartGyftyProduct);
                     ProductDecoratorImpl decorator = ProductDecoratorHelper.getProductDecorator("ZNy5DC1VB5");
@@ -450,6 +463,9 @@ public class MainActivity extends Activity {
                 CartHelper.removeProductInCart(cart, product);
                 GyftyUserEvent gyftyUserEvent = new ParseQuery<GyftyUserEvent>("GyftyUserEvent").get("jFQCAcVpzQ");
                 cart.setEvent(gyftyUserEvent);
+                System.out.println("b4 discount " + cart.total);
+                Promotion promo = PromotionHelper.getPromotion("Testing");
+                CartHelper.addPromotion(cart, promo);
 
                 try {
                             System.out.println("\n\n\n\n\nDecorated Price " + cartGyftyProduct1.getPrice() + "Initial Price" + product.getPrice() + "\n\n\n\n\n");

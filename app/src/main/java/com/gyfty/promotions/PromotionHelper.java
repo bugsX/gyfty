@@ -71,6 +71,8 @@ public class PromotionHelper {
                     return (Promotion) result;
                 }
             } catch (ParseException e) {
+                if (e.getMessage().equals("no results found for query"))
+                    continue;
                 Log.e("[Params] promocode:" + promoCode, "getPromotion", e);
             }
         }
