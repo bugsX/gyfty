@@ -6,7 +6,6 @@ import android.widget.ListView;
 
 import com.gyfty.attributes.GyftyAttributes;
 import com.gyfty.cart.Cart;
-import com.gyfty.cart.CartHelper;
 import com.gyfty.category.Category;
 import com.gyfty.category.CategoryCustomSpecs;
 import com.gyfty.decorator.ProductDecoratorHelper;
@@ -21,8 +20,6 @@ import com.gyfty.order.Order;
 import com.gyfty.order.OrderStatus;
 import com.gyfty.order.OrderStatusMessage;
 import com.gyfty.pickup.PickUp;
-import com.gyfty.products.BaseCartGyftyProduct;
-import com.gyfty.products.CartGyftyProduct;
 import com.gyfty.products.GyftyProduct;
 import com.gyfty.products.GyftyProductsGroup;
 import com.gyfty.products.ProductAdapter;
@@ -30,9 +27,7 @@ import com.gyfty.products.ProductCustomSpecs;
 import com.gyfty.promotions.CartPromotion;
 import com.gyfty.promotions.CategoryPromotion;
 import com.gyfty.promotions.ProductPromotion;
-import com.gyfty.promotions.Promotion;
 import com.gyfty.promotions.PromotionErrorCodes;
-import com.gyfty.promotions.PromotionHelper;
 import com.gyfty.promotions.VendorPromotion;
 import com.gyfty.support.Addresses;
 import com.gyfty.support.Locale;
@@ -50,6 +45,9 @@ import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends Activity {
@@ -64,7 +62,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
 
-            Parse.initialize(this, "xtjCihTU7fCFgV0szuqdwStLZuvoveuzbaH9OHEU", "Kqw3pXo9I7Oc3qkl7n1FCWAcRBWWE352wUMnDWON");
+        Parse.initialize(this, "M9x5Ptiz7QZW80z5mwJGBNBW4GupRNY8j5akwZDL", "yAhlN8zeqvi3fshJIHekZvzR1l4th3IL776PZLzV");
         ParseInstallation.getCurrentInstallation().saveInBackground();
 
         ParseObject.registerSubclass(GyftyAttributes.class);
@@ -439,10 +437,23 @@ public class MainActivity extends Activity {
             }
             Cart cart = new Cart();
 
+        try {
+            GyftyProduct product = new ParseQuery<GyftyProduct>("GyftyProduct").get("Fa8Tt1up4X");
+            ParseQuery<ProductCustomSpecs> query = ParseQuery.getQuery(ProductCustomSpecs.class);
+            query.whereEqualTo("product", product);
+            query.whereEqualTo("specName", "sugarFree");
+            ProductCustomSpecs specs = query.getFirst();
+            List<Object> specMap = (List<Object>) specs.get(ProductCustomSpecs.ProductCustomSpecsParams.specValue.toString());
+            Map<String, String> objectIds = (HashMap<String, String>) specMap.get(0);
+            ProductDecoratorImpl pd = ProductDecoratorHelper.getProductDecorator(objectIds.get("objectId"));
+            System.out.println("Testing data " + pd.getCostType() + " - " + pd.getCostFactor());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-            try {
+/*        try {
                     GyftyProduct product = new ParseQuery<GyftyProduct>("GyftyProduct").include(GyftyProduct.GyftyProductParams.vendor.toString()).get("1CRdHeucEr");
-/*                ProductPromotion promo = new ProductPromotion();
+*//*                ProductPromotion promo = new ProductPromotion();
                 promo.setFromDate(date);
                 promo.setIsActive(true);
                 promo.setPromoType("ProductPromotion");
@@ -450,7 +461,7 @@ public class MainActivity extends Activity {
                 promo.setActor(product);
                 promo.setMaxPromoValue((double) 3000);
                 promo.setPercentPromotion((double) 10);
-                promo.save();*/
+                promo.save();*//*
                 CartHelper.addProductToCart(cart, product);
                     CartGyftyProduct cartGyftyProduct = new BaseCartGyftyProduct(product);
                 CartHelper.addProductToCart(cart, cartGyftyProduct);
@@ -482,7 +493,7 @@ public class MainActivity extends Activity {
 
             System.out.println(cart.productPrice);
             System.out.println(cart.total);
-        Order o = CartHelper.buildCart(cart);
+        Order o = CartHelper.buildCart(cart);*/
 
 //
 //        ParseQuery<ParseObject> query = ParseQuery.getQuery("ClassName");
