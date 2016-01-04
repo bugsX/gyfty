@@ -447,9 +447,16 @@ public class MainActivity extends Activity {
             Map<String, String> objectIds = (HashMap<String, String>) specMap.get(0);
             ProductDecoratorImpl pd = ProductDecoratorHelper.getProductDecorator(objectIds.get("objectId"));
             System.out.println("Testing data " + pd.getCostType() + " - " + pd.getCostFactor());
+
+            product = new ParseQuery<GyftyProduct>("GyftyProduct").get("oIgToxvxgX");
+            List<ProductDecoratorImpl> pds = ProductDecoratorHelper.getAllPDsFromProductCustomSpecName(product, "size");
+            for (ProductDecoratorImpl pdimpl : pds) {
+                System.out.println("Testing Multiple " + pdimpl.getCostType() + " - " + pdimpl.getCostFactor());
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
 
 /*        try {
                     GyftyProduct product = new ParseQuery<GyftyProduct>("GyftyProduct").include(GyftyProduct.GyftyProductParams.vendor.toString()).get("1CRdHeucEr");
